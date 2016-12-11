@@ -1,12 +1,13 @@
 // FIXME Replace `int` with your own data type when you use this.
+class dummy_type {
+ public:
+  void display();
+};
+
 typedef dummy_type data_item;
 
 #ifndef LIST_NODE
 #define LIST_NODE
-
-class dummy_type {
-  void display();
-};
 
 class list_node {
  public:
