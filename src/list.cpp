@@ -52,7 +52,7 @@ void list::display(list_node* current) const {
 
   current->display();
 
-  display(current->next();)
+  display(current->next());
 }
 
 
@@ -75,7 +75,7 @@ bool list::remove(data_item* to_remove) {
   return success;
 }
 
-node* list::remove(node*& current, data_item* to_remove, bool& success) {
+node* list::remove(node* current, data_item* to_remove, bool& success) {
   if (current == NULL) {
     return NULL;
   }

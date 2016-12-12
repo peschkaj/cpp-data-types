@@ -20,7 +20,7 @@ class clist {
   /* Inserts a new item at the head of the list */
   void insert_at_head(const char* data);
 
-  bool empty();
+  bool empty() const;
 
   node* head();
   node* tail();
@@ -30,6 +30,7 @@ class clist {
 
  private:
   int count;
+  int size;
   node* list_head;
   node* list_tail;
 };
