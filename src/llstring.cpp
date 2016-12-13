@@ -160,9 +160,11 @@ const char* llstring::to_cstring() const {
 
 
 
-int llstring::length() {
+int llstring::length() const {
   return data_length;
 }
+
+
 
 int llstring::append(const char* to_add) {
   int added = 0;
@@ -171,4 +173,24 @@ int llstring::append(const char* to_add) {
   data_length += added;
 
   return added;
+}
+
+
+
+
+llstring& llstring::operator+=(const llstring rhs) {
+  char* buffer;
+
+  buffer = new char[rhs.length() + 1];
+  strcpy(buffer, rhs.to_cstring());
+  append(buffer);
+  delete[] buffer;
+
+  return *this;
+}
+
+llstring& llstring::operator+=(const char* rhs) {
+  append(rhs);
+
+  return *this;
 }

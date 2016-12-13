@@ -35,12 +35,12 @@ class llstring {
 
   // Overloading the += operator to add either another llstring or
   // a char array
-  // llstring& operator+=(const llstring& rhs);
-  // llstring& operator+=(const char* rhs);
+  llstring& operator+=(const llstring rhs);
+  llstring& operator+=(const char* rhs);
 
   // Overloading the + operator to combine two llstrings or one llstring
   // and a char array
-  llstring& operator+(const llstring& rhs);
+  llstring& operator+(const llstring rhs);
   llstring& operator+(const char* rhs);
 
   // Turns an llstring into a char array
@@ -52,7 +52,7 @@ class llstring {
   operator const char* ();
 
   /* Return the length of the string in the container */
-  int length();
+  int length() const;
 
   /* append characters to the string */
   int append(const char* to_add);

@@ -22,4 +22,12 @@ TEST_CASE("llstring - Testing equals and append") {
   cout << "a is now '" << ab_str << "'" << endl;
 
   CHECK(a.equals("ab"));
+
+  llstring ab;
+  ab += "a";
+  ab += "b";
+  CHECK(ab.equals("ab"));
+
+  ab += a;
+  CHECK(ab.equals("abab"));
 }
