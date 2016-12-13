@@ -27,21 +27,30 @@ clist_node::clist_node(const char* data) {
 
 clist_node::~clist_node() {
   if (node_data) {
-    delete node_data;
+    delete[] node_data;
   }
 
-  delete next_node;
+  if (next_node) {
+    delete next_node;
+  }
+
+  node_data = NULL;
+  next_node = NULL;
 }
 
 
 
 clist_node* clist_node::next() {
+  if (!next_node) {
+    return NULL;
+  }
+
   return next_node;
 }
 
 
 
-void clist_node::next(clist_node* next_node) {
+void clist_node::next(clist_node*& next_node) {
   this->next_node = next_node;
 }
 
@@ -54,8 +63,12 @@ char* clist_node::data() {
 
 
 void clist_node::data(char* node_data) {
-  this->node_data = node_data;
-  data_length = strlen(node_data);
+  int len = strlen(node_data) + 1;
+
+  this->node_data = new char[len];
+  strcpy(this->node_data, node_data);
+
+  data_length = len;
 }
 
 

@@ -3,36 +3,41 @@
 
 llstring::llstring() {
   chars = new clist();
-  length = 0;
+  data_length = 0;
 }
 
 llstring::llstring(const char* str) {
   chars = new clist();
-  length = strlen(str);
+  data_length = strlen(str);
   chars->insert(str);
 }
 
 llstring::~llstring() {
   delete chars;
+  chars = NULL;
 }
 
-bool llstring::operator==(llstring& rhs) {
+bool llstring::equals(llstring& rhs) const {
   bool equals = false;
 
-  if (length != rhs.length) {
+  if (data_length != rhs.data_length) {
     return false;
   }
 
   const char* rhs_str = rhs.to_cstring();
+  const char* lhs_str = to_cstring();
 
-  equals = (*(this) == rhs_str);
+  equals = (strcmp(lhs_str, rhs_str) == 0);
 
   delete[] rhs_str;
+  delete[] lhs_str;
+  rhs_str = NULL;
+  lhs_str = NULL;
 
   return equals;
 }
 
-bool llstring::operator==(const char* rhs) {
+bool llstring::equals(const char* rhs) const {
   bool equals = false;
 
   const char* lhs = to_cstring();
@@ -40,31 +45,44 @@ bool llstring::operator==(const char* rhs) {
   equals = (strcmp(lhs, rhs) == 0);
 
   delete[] lhs;
+  lhs = NULL;
 
   return equals;
 }
 
-bool llstring::operator!=(llstring& rhs) {
+bool llstring::operator==(llstring& rhs) const {
+  return equals(rhs);
+}
+
+bool llstring::operator==(const char* rhs) const {
+  return equals(rhs);
+}
+
+bool llstring::operator!=(llstring& rhs) const {
   return !(*(this) == rhs);
 }
 
-bool llstring::operator!=(const char* rhs) {
+bool llstring::operator!=(const char* rhs) const {
   return !(*(this) == rhs);
 }
 
-bool llstring::operator<(llstring& rhs) {
+bool llstring::operator<(llstring& rhs) const {
   bool less = false;
 
   const char* rhs_str = rhs.to_cstring();
+  const char* lhs_str = to_cstring();
 
-  less = (*(this) < rhs_str);
+  less = (strcmp(lhs_str, rhs_str) < 0);
 
   delete[] rhs_str;
+  delete[] lhs_str;
+  rhs_str = NULL;
+  lhs_str = NULL;
 
   return less;
 }
 
-bool llstring::operator<(const char* rhs) {
+bool llstring::operator<(const char* rhs) const {
   bool less = false;
 
   const char* lhs = to_cstring();
@@ -72,31 +90,36 @@ bool llstring::operator<(const char* rhs) {
   less = (strcmp(lhs, rhs) < 0);
 
   delete[] lhs;
+  lhs = NULL;
 
   return less;
 }
 
-bool llstring::operator<=(llstring& rhs) {
+bool llstring::operator<=(llstring& rhs) const {
   return (*(this) == rhs) | (*(this) < rhs);
 }
 
-bool llstring::operator<=(const char* rhs) {
+bool llstring::operator<=(const char* rhs) const {
   return (*(this) == rhs) | (*(this) < rhs);
 }
 
-bool llstring::operator>(llstring& rhs) {
+bool llstring::operator>(llstring& rhs) const {
   bool greater = false;
 
   const char* rhs_str = rhs.to_cstring();
+  const char* lhs_str = to_cstring();
 
-  greater = (*(this) < rhs_str);
+  greater = (strcmp(lhs_str, rhs_str) > 0);
 
   delete[] rhs_str;
+  delete[] lhs_str;
+  rhs_str = NULL;
+  lhs_str = NULL;
 
   return greater;
 }
 
-bool llstring::operator>(const char* rhs) {
+bool llstring::operator>(const char* rhs) const {
   bool greater = false;
 
   const char* lhs = to_cstring();
@@ -104,45 +127,48 @@ bool llstring::operator>(const char* rhs) {
   greater = (strcmp(lhs, rhs) > 0);
 
   delete[] lhs;
+  lhs = NULL;
 
   return greater;
 }
 
-bool llstring::operator>=(llstring& rhs) {
+bool llstring::operator>=(llstring& rhs) const {
   return (*(this) == rhs) | (*(this) > rhs);
 }
 
-bool llstring::operator>=(const char* rhs) {
+bool llstring::operator>=(const char* rhs) const {
   return (*(this) == rhs) | (*(this) > rhs);
 }
 
 
 
 
+/* Converts the llstring into some kind of char* or const char* by using
+   the appropriate method in the clist container
+ */
 llstring::operator char* () {
-  char* buffer = new char[length + 1];
-
-  // FIXME implement array create in clist
-
-  return buffer;
+  return chars->to_cstring();
 }
 
 llstring::operator const char* () {
-  char* buffer = new char[length + 1];
-
-  // FIXME implement the char* array creation in clist
-
-  return buffer;
+  return chars->to_cstring();
 }
 
 const char* llstring::to_cstring() const {
-  return (const char*)this;
+  return chars->to_cstring();
 }
 
 
 
-llstring& llstring::operator+=(const llstring& rhs) {
+int llstring::length() {
+  return data_length;
+}
 
+int llstring::append(const char* to_add) {
+  int added = 0;
 
-  return *this;
+  added = chars->append(to_add);
+  data_length += added;
+
+  return added;
 }

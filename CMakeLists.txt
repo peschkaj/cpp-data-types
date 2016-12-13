@@ -11,6 +11,9 @@ file(GLOB cpp-data-types_src
   "src/*.h"
   "src/*.cpp"
   )
+file(GLOB cpp-data-types_tests
+  "tests/*.h"
+  "tests/*.cpp")
 
 add_library(cpp-data-types ${cpp-data-types_src})
 
@@ -19,3 +22,6 @@ add_custom_target(run
   DEPENDS cpp-data-types
   WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
   )
+
+add_executable(tests "tests/main.cpp")
+target_link_libraries(tests cpp-data-types)

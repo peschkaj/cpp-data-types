@@ -8,6 +8,24 @@ clist::clist() {
   size = 0;
 }
 
+clist::clist(const clist& rhs) {
+  node* current;
+  char* buffer;
+  int length;
+
+  current = rhs.list_head;
+
+  while (current) {
+    length = current->length() + 1;
+    buffer = new char[length];
+    buffer = current->data();
+
+    insert(buffer);
+
+    current = current->next();
+  }
+}
+
 clist::~clist() {
   delete list_head;
   list_head = NULL;
@@ -16,25 +34,46 @@ clist::~clist() {
 
 void clist::insert(const char* data) {
   node* nn = new node(data);
-  list_tail->next(nn);
-  list_tail = nn;
+
+  if (!list_tail) {
+    list_head = nn;
+    list_tail = nn;
+  } else {
+    list_tail->next(nn);
+    list_tail = nn;
+  }
 
   ++count;
   size += strlen(data);
 }
+
+
 
 void clist::insert_at_head(const char* data) {
   node* nn = new node(data);
-  nn->next(list_head);
-  list_head = nn;
+
+  insert_at_head(nn);
 
   ++count;
   size += strlen(data);
 }
 
-bool clist::empty() const {
-  return !(count == 0);
+void clist::insert_at_head(node*& to_add) {
+  to_add->next(list_head);
+  list_head = to_add;
 }
+
+
+
+bool clist::empty() const {
+  return (count == 0);
+}
+
+int clist::length() const {
+  return size;
+}
+
+
 
 node* clist::head() {
   return list_head;
@@ -44,9 +83,95 @@ node* clist::tail() {
   return list_tail;
 }
 
-clist::operator char* () {
+
+
+/* Converts our list of char* into a single char* */
+// clist::operator char* () {
+//   node* current;
+//   char* buffer;
+
+//   if (size == 0) {
+//     return NULL;
+//   }
+
+//   buffer = new char[size + 1];
+//   current = list_head;
+
+//   while (current) {
+//     strcat(buffer, current->data());
+
+//     current = current->next();
+//   }
+
+//   buffer[size] = '\0';
+
+//   return buffer;
+// }
+
+
+
+
+// /* Converts our list of char* into a const char* */
+// clist::operator const char *() {
+//   return (const char*)((char *)this);
+// }
+
+
+
+/* Append characters to this list */
+int clist::append(const char* rhs) {
+  int appended = 0;
+
+  insert(rhs);
+  appended = strlen(rhs);
+
+  return appended;
+}
+
+
+
+/* Append another clist to this one */
+clist& clist::operator+=(const clist& rhs) {
   node* current;
-  char* buffer, * data_buffer;
+  char* buffer;
+  int len;
+
+  if (count == 0) {
+    return *this;
+  }
+
+  current = rhs.list_head;
+
+  while (current) {
+    len = current->length();
+
+    buffer = new char[len + 1];
+    strcpy(buffer, current->data());
+    insert(buffer);
+    delete[] buffer;
+
+    current = current->next();
+    size += len;
+  }
+
+  return *this;
+}
+
+clist& clist::operator+=(const char* rhs) {
+  insert(rhs);
+  size += strlen(rhs);
+  return *this;
+}
+
+clist& clist::operator+=(char* rhs) {
+  insert(rhs);
+  size += strlen(rhs);
+  return *this;
+}
+
+char* clist::to_cstring() {
+  node* current;
+  char* buffer;
 
   if (size == 0) {
     return NULL;
@@ -60,6 +185,8 @@ clist::operator char* () {
 
     current = current->next();
   }
+
+  buffer[size] = '\0';
 
   return buffer;
 }

@@ -12,6 +12,7 @@ typedef clist_node node;
 class clist {
  public:
   clist();
+  clist(const clist& rhs);
   ~clist();
 
   /* Inserts a new item at the tail of the list */
@@ -21,14 +22,24 @@ class clist {
   void insert_at_head(const char* data);
 
   bool empty() const;
+  int length() const;
 
   node* head();
   node* tail();
 
-  operator char* ();
-  operator const char* ();
+  /* Conversion operators */
+  // operator char* ();
+  // operator const char* ();
+  char* to_cstring();
+
+  /* Append a thing */
+  int append(const char* rhs);
+  clist& operator+=(const clist& rhs);
+  clist& operator+=(const char* rhs);
+  clist& operator+=(char* rhs);
 
  private:
+  void insert_at_head(node*& to_add);
   int count;
   int size;
   node* list_head;

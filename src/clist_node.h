@@ -16,7 +16,7 @@ class clist_node {
   ~clist_node();
 
   clist_node* next();
-  void next(clist_node* next_node);
+  void next(clist_node*& next_node);
 
   char* data();
   void data(char* new_data);
