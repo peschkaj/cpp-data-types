@@ -49,8 +49,7 @@ TEST_CASE("llstring - can pretend to be a char*") {
 
 TEST_CASE("llstring - copy constructor produces a valid copy") {
   llstring a("a");
-  llstring b;
-  b = a;
+  llstring b = a;
 
   CHECK(b == "a");
   CHECK(a == b);

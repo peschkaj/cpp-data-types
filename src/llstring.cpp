@@ -8,8 +8,7 @@ llstring::llstring() {
 
 llstring::llstring(const char* str) {
   chars = new clist();
-  data_length = strlen(str);
-  chars->insert(str);
+  append(str);
 }
 
 llstring::llstring(const llstring& rhs) {
@@ -24,20 +23,12 @@ llstring::~llstring() {
 
 bool llstring::equals(const llstring& rhs) const {
   bool equals = false;
-
-  if (data_length != rhs.data_length) {
-    return false;
-  }
-
   const char* rhs_str = rhs.to_cstring();
-  const char* lhs_str = to_cstring();
 
-  equals = (strcmp(lhs_str, rhs_str) == 0);
+  equals = this->equals(rhs_str);
 
   delete[] rhs_str;
-  delete[] lhs_str;
   rhs_str = NULL;
-  lhs_str = NULL;
 
   return equals;
 }
@@ -75,14 +66,11 @@ bool llstring::operator<(llstring& rhs) const {
   bool less = false;
 
   const char* rhs_str = rhs.to_cstring();
-  const char* lhs_str = to_cstring();
 
-  less = (strcmp(lhs_str, rhs_str) < 0);
+  less = (*this < rhs_str);
 
   delete[] rhs_str;
-  delete[] lhs_str;
   rhs_str = NULL;
-  lhs_str = NULL;
 
   return less;
 }
@@ -112,14 +100,11 @@ bool llstring::operator>(llstring& rhs) const {
   bool greater = false;
 
   const char* rhs_str = rhs.to_cstring();
-  const char* lhs_str = to_cstring();
 
-  greater = (strcmp(lhs_str, rhs_str) > 0);
+  greater = (*this > rhs_str);
 
   delete[] rhs_str;
-  delete[] lhs_str;
   rhs_str = NULL;
-  lhs_str = NULL;
 
   return greater;
 }
@@ -182,7 +167,6 @@ llstring& llstring::operator=(const llstring& rhs) {
   clist *old_chars = chars;
   chars = new clist;
   chars->append(rhs.to_cstring());
-
   delete old_chars;
 
   return *this;
