@@ -37,3 +37,10 @@ TEST_CASE("llstring - operator==") {
   a += "b";
   CHECK(a == "ab");
 }
+
+TEST_CASE("llstring - can pretend to be a char*") {
+  llstring a("a");
+  CHECK(strcmp((char *)a, "a") == 0);
+  CHECK(strcmp((const char*)a, "a") == 0);
+  CHECK(strcmp(a, "a") == 0);
+}
