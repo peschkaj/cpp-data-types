@@ -29,3 +29,11 @@ TEST_CASE("llstring - operator+") {
 
   CHECK(op_ab.equals("ab"));
 }
+
+TEST_CASE("llstring - operator==") {
+  llstring a("a");
+  CHECK(a == "a");
+
+  a += "b";
+  CHECK(a == "ab");
+}
