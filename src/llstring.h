@@ -55,6 +55,9 @@ class llstring {
   // and a char array
   llstring operator+(const llstring& rhs);
   llstring operator+(const char* rhs);
+  llstring operator+(const int rhs);
+  llstring operator+(const double rhs);
+
 
   /* Return the length of the string in the container */
   int length() const;
@@ -65,7 +68,6 @@ class llstring {
   friend std::ostream& operator<<(std::ostream& out, const llstring& str);
 
  private:
-  // Appends a single clist node to the llstring
 
 
   int data_length;

@@ -1,5 +1,6 @@
 #include "llstring.h"
 #include <cstring>
+#include <cstdlib>
 
 llstring::llstring() {
   chars = new clist();
