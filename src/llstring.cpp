@@ -177,7 +177,6 @@ int llstring::append(const char* to_add) {
 
 
 
-
 llstring& llstring::operator+=(const llstring& rhs) {
   char* buffer;
 
@@ -193,4 +192,18 @@ llstring& llstring::operator+=(const char* rhs) {
   append(rhs);
 
   return *this;
+}
+
+
+
+llstring llstring::operator+(const llstring& rhs) {
+  llstring new_string(to_cstring());
+  new_string += rhs.to_cstring();
+  return new_string;
+}
+
+llstring llstring::operator+(const char* rhs) {
+  llstring new_string(to_cstring());
+  new_string += rhs;
+  return new_string;
 }

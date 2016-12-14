@@ -3,24 +3,20 @@
 
 clist::clist() {
   list_head = NULL;
-  list_tail =  list_head;
+  list_tail = list_head;
   count = 0;
   size = 0;
 }
 
 clist::clist(const clist& rhs) {
   node* current;
-  char* buffer;
-  int length;
+
+  list_head = list_tail = NULL;
 
   current = rhs.list_head;
 
   while (current) {
-    length = current->length() + 1;
-    buffer = new char[length];
-    buffer = current->data();
-
-    insert(buffer);
+    insert(current->data());
 
     current = current->next();
   }
@@ -170,14 +166,14 @@ clist& clist::operator+=(char* rhs) {
 }
 
 char* clist::to_cstring() {
-  node* current;
-  char* buffer;
+  node* current = NULL;
+  char* buffer = NULL;
 
   if (size == 0) {
     return NULL;
   }
 
-  buffer = new char[size + 1];
+  buffer = new char[size + 1]();
   current = list_head;
 
   while (current) {

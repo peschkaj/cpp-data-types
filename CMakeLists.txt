@@ -23,5 +23,5 @@ add_custom_target(run
   WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
   )
 
-add_executable(tests "tests/main.cpp")
+add_executable(tests "tests/main.cpp" "tests/llstring-append.cpp")
 target_link_libraries(tests cpp-data-types)

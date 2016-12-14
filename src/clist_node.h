@@ -18,7 +18,7 @@ class clist_node {
   clist_node* next();
   void next(clist_node*& next_node);
 
-  char* data();
+  const char* data() const;
   void data(char* new_data);
 
   int length();
