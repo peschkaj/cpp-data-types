@@ -17,7 +17,7 @@ llstring::~llstring() {
   chars = NULL;
 }
 
-bool llstring::equals(llstring& rhs) const {
+bool llstring::equals(const llstring& rhs) const {
   bool equals = false;
 
   if (data_length != rhs.data_length) {
@@ -178,7 +178,7 @@ int llstring::append(const char* to_add) {
 
 
 
-llstring& llstring::operator+=(const llstring rhs) {
+llstring& llstring::operator+=(const llstring& rhs) {
   char* buffer;
 
   buffer = new char[rhs.length() + 1];

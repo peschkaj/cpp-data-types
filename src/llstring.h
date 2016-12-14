@@ -15,7 +15,7 @@ class llstring {
   // Destroy this llstring and all associated resources
   ~llstring();
 
-  bool equals(llstring& rhs) const;
+  bool equals(const llstring& rhs) const;
   bool equals(const char* rhs) const;
 
   // Comparison operator overloads
@@ -35,12 +35,12 @@ class llstring {
 
   // Overloading the += operator to add either another llstring or
   // a char array
-  llstring& operator+=(const llstring rhs);
+  llstring& operator+=(const llstring& rhs);
   llstring& operator+=(const char* rhs);
 
   // Overloading the + operator to combine two llstrings or one llstring
   // and a char array
-  llstring& operator+(const llstring rhs);
+  llstring& operator+(const llstring& rhs);
   llstring& operator+(const char* rhs);
 
   // Turns an llstring into a char array
