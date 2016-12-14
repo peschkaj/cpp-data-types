@@ -46,3 +46,19 @@ TEST_CASE("llstring - can pretend to be a char*") {
 
   cout << "a is '" << a << "'" << endl;
 }
+
+TEST_CASE("llstring - copy constructor produces a valid copy") {
+  llstring a("a");
+  llstring b;
+  b = a;
+
+  CHECK(b == "a");
+  CHECK(a == b);
+}
+
+TEST_CASE("llstring - operator== tests") {
+  llstring a("a");
+  llstring b("a");
+
+  CHECK(a == b);
+}

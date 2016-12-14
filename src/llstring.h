@@ -13,6 +13,9 @@ class llstring {
   // Create a llstring from a char array
   llstring(const char* str);
 
+  // Create an llstring from another llstring
+  llstring(const llstring& rhs);
+
   // Destroy this llstring and all associated resources
   ~llstring();
 
@@ -20,7 +23,7 @@ class llstring {
   bool equals(const char* rhs) const;
 
   // Comparison operator overloads
-  bool operator==(llstring& rhs) const;
+  bool operator==(const llstring& rhs) const;
   bool operator==(const char* rhs) const;
   bool operator!=(llstring& rhs) const;
   bool operator!=(const char* rhs) const;
@@ -33,6 +36,15 @@ class llstring {
   bool operator>=(llstring& rhs) const;
   bool operator>=(const char* rhs) const;
 
+  // Operator overloading to allow an llstring to be used directly in
+  // place of a char* without using `to_cstring()`.
+  operator char* ();
+  operator const char* ();
+
+  // Turns an llstring into a char array
+  const char* to_cstring() const;
+
+  llstring& operator=(const llstring& rhs);
 
   // Overloading the += operator to add either another llstring or
   // a char array
@@ -43,14 +55,6 @@ class llstring {
   // and a char array
   llstring operator+(const llstring& rhs);
   llstring operator+(const char* rhs);
-
-  // Turns an llstring into a char array
-  const char* to_cstring() const;
-
-  // Operator overloading to allow an llstring to be used directly in
-  // place of a char* without using `to_cstring()`.
-  operator char* ();
-  operator const char* ();
 
   /* Return the length of the string in the container */
   int length() const;

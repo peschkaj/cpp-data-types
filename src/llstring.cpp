@@ -12,6 +12,11 @@ llstring::llstring(const char* str) {
   chars->insert(str);
 }
 
+llstring::llstring(const llstring& rhs) {
+  chars = new clist();
+  append(rhs.to_cstring());
+}
+
 llstring::~llstring() {
   delete chars;
   chars = NULL;
@@ -50,7 +55,7 @@ bool llstring::equals(const char* rhs) const {
   return equals;
 }
 
-bool llstring::operator==(llstring& rhs) const {
+bool llstring::operator==(const llstring& rhs) const {
   return equals(rhs);
 }
 
@@ -156,6 +161,31 @@ llstring::operator const char* () {
 
 const char* llstring::to_cstring() const {
   return chars->to_cstring();
+}
+
+
+
+/* Overloading the assignment operator.
+
+   This includes a test to make sure we're not assigning to ourself.
+
+   Once we know we're not trying to overwrite ourself, the next step is to
+   move the current list of characters into a temporary clist. If the program
+   hits an exception while allocating memory, this llstring will still have
+   its original characters.
+ */
+llstring& llstring::operator=(const llstring& rhs) {
+  if (this == &rhs) {
+    return *this;
+  }
+
+  clist *old_chars = chars;
+  chars = new clist;
+  chars->append(rhs.to_cstring());
+
+  delete old_chars;
+
+  return *this;
 }
 
 
