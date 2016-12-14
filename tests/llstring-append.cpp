@@ -43,4 +43,6 @@ TEST_CASE("llstring - can pretend to be a char*") {
   CHECK(strcmp((char *)a, "a") == 0);
   CHECK(strcmp((const char*)a, "a") == 0);
   CHECK(strcmp(a, "a") == 0);
+
+  cout << "a is '" << a << "'" << endl;
 }

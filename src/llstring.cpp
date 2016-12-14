@@ -207,3 +207,11 @@ llstring llstring::operator+(const char* rhs) {
   new_string += rhs;
   return new_string;
 }
+
+
+
+std::ostream& operator<<(std::ostream& out, const llstring& str) {
+  out << str.to_cstring();
+
+  return out;
+}

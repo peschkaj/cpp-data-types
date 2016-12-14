@@ -1,4 +1,5 @@
 #include <cstring>
+#include <iostream>
 #include "clist.h"
 
 #ifndef LLSTRING
@@ -56,6 +57,8 @@ class llstring {
 
   /* append characters to the string */
   int append(const char* to_add);
+
+  friend std::ostream& operator<<(std::ostream& out, const llstring& str);
 
  private:
   // Appends a single clist node to the llstring
