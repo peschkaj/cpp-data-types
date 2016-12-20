@@ -226,7 +226,11 @@ stringbuilder stringbuilder::operator+(const char* rhs) {
 
 
 std::ostream& operator<<(std::ostream& out, const stringbuilder& str) {
-  out << str.to_cstring();
+  const char* buffer= str.to_cstring();
+
+  out << buffer;
+
+  delete[] buffer;
 
   return out;
 }
