@@ -14,7 +14,10 @@ stringbuilder::stringbuilder(const char* str) {
 
 stringbuilder::stringbuilder(const stringbuilder& rhs) {
   chars = new clist();
-  append(rhs.to_cstring());
+  const char* buffer = rhs.to_cstring();
+  append(buffer);
+
+  delete[] buffer;
 }
 
 stringbuilder::~stringbuilder() {
@@ -137,14 +140,6 @@ bool stringbuilder::operator>=(const char* rhs) const {
 /* Converts the stringbuilder into some kind of char* or const char* by using
    the appropriate method in the clist container
  */
-stringbuilder::operator char* () {
-  return chars->to_cstring();
-}
-
-stringbuilder::operator const char* () {
-  return chars->to_cstring();
-}
-
 const char* stringbuilder::to_cstring() const {
   return chars->to_cstring();
 }
@@ -193,9 +188,7 @@ int stringbuilder::append(const char* to_add) {
 
 
 stringbuilder& stringbuilder::operator+=(const stringbuilder& rhs) {
-  const char* buffer;
-
-  buffer = rhs.to_cstring();
+  const char* buffer = rhs.to_cstring();
   append(buffer);
   delete[] buffer;
 
@@ -211,14 +204,24 @@ stringbuilder& stringbuilder::operator+=(const char* rhs) {
 
 
 stringbuilder stringbuilder::operator+(const stringbuilder& rhs) {
-  stringbuilder new_string(to_cstring());
-  new_string += rhs.to_cstring();
+  const char* buffer = to_cstring();
+  stringbuilder new_string(buffer);
+
+  const char* rhs_buffer = rhs.to_cstring();
+  new_string += rhs_buffer;
+
+  delete[] buffer;
+  delete[] rhs_buffer;
+
   return new_string;
 }
 
 stringbuilder stringbuilder::operator+(const char* rhs) {
-  stringbuilder new_string(to_cstring());
+  const char* buffer = to_cstring();
+  stringbuilder new_string(buffer);
   new_string += rhs;
+
+  delete[] buffer;
   return new_string;
 }
 

@@ -36,11 +36,6 @@ class stringbuilder {
   bool operator>=(stringbuilder& rhs) const;
   bool operator>=(const char* rhs) const;
 
-  // Operator overloading to allow an stringbuilder to be used directly in
-  // place of a char* without using `to_cstring()`.
-  operator char* ();
-  operator const char* ();
-
   // Turns an stringbuilder into a char array
   const char* to_cstring() const;
 

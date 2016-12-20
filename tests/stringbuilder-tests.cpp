@@ -40,13 +40,6 @@ TEST_CASE("stringbuilder - operator==") {
   CHECK(a == "ab");
 }
 
-TEST_CASE("stringbuilder - can pretend to be a char*") {
-  stringbuilder a("a");
-  CHECK(strcmp((char *)a, "a") == 0);
-  CHECK(strcmp((const char*)a, "a") == 0);
-  CHECK(strcmp(a, "a") == 0);
-}
-
 TEST_CASE("stringbuilder - copy constructor produces a valid copy") {
   stringbuilder a("a");
   stringbuilder b = a;
