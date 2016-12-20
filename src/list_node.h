@@ -1,3 +1,5 @@
+#include <iostream>
+
 #ifndef LIST_NODE
 #define LIST_NODE
 
@@ -25,6 +27,7 @@ class list_node {
 template <typename T>
 list_node<T>::list_node(T data) {
   this->data(data);
+  this->next_node = NULL;
 }
 
 
@@ -35,7 +38,12 @@ list_node<T>::~list_node() {
     delete node_data;
   }
 
-  delete next_node;
+  if (next_node) {
+    delete next_node;
+  }
+
+  node_data = NULL;
+  next_node = NULL;
 }
 
 

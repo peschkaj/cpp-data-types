@@ -13,13 +13,17 @@ class list {
   list_node<T>* head();
   void head(list_node<T>* new_head);
 
+  list_node<T>* tail();
+
   int count() const;
   int display() const;
 
   bool insert(T to_add);
+  bool append(T to_add);
   bool remove(const T& to_remove);
  private:
   list_node<T>* list_head;
+  list_node<T>* list_tail;
   int node_count;
 
   list_node<T>* remove(list_node<T>* current, const T& to_remove, bool& success);
@@ -31,6 +35,7 @@ class list {
 template <typename T>
 list<T>::list() {
   list_head = NULL;
+  list_tail = NULL;
   node_count = 0;
 }
 
@@ -40,6 +45,7 @@ template <typename T>
 list<T>::~list() {
   delete list_head;
   list_head = NULL;
+  list_tail = NULL;
 }
 
 
@@ -62,6 +68,11 @@ void list<T>::head(list_node<T>* new_head) {
     temp->next(NULL);
     delete temp;
   }
+}
+
+template <typename T>
+list_node<T>* list<T>::tail() {
+  return list_tail;
 }
 
 
@@ -98,9 +109,31 @@ void list<T>::display(list_node<T>* current) const {
 template <typename T>
 bool list<T>::insert(T to_add) {
   list_node<T>* new_node = new list_node<T>(to_add);
+
+  if (list_head == NULL) {
+    list_tail = new_node;
+  }
+
   new_node->next(list_head);
   list_head = new_node;
   ++node_count;
+
+  return true;
+}
+
+
+
+template <typename T>
+bool list<T>::append(T to_add) {
+  list_node<T>* new_node = new list_node<T>(to_add);
+
+  if (list_tail == NULL) {
+    list_head = new_node;
+    list_tail = new_node;
+  } else {
+    list_tail->next(new_node);
+    list_tail = new_node;
+  }
 
   return true;
 }
@@ -130,12 +163,17 @@ list_node<T>* list<T>::remove(list_node<T>* current,
                        to_remove,
                        success));
 
+  if (list_tail != current && current->next() == NULL) {
+    list_tail = current;
+  }
+
   if (current->data() == to_remove) {
     list_node<T>* temp = current;
     current = current->next();
 
     temp->next(NULL);
     delete temp;
+    temp = NULL;
 
     --node_count;
 
