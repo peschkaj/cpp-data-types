@@ -179,8 +179,11 @@ void jpstring::grow_chars(int minimum_length) {
   }
 
   char* temp = chars;
-  chars = new char[capacity];
-  strcpy(chars, temp);
+  chars = new char[capacity]();
+
+  if (temp) {
+    strcpy(chars, temp);
+  }
 
   delete[] temp;
 }

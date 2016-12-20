@@ -17,10 +17,10 @@ TEST_CASE("jpstring - adding produces equal strings") {
   CHECK(a == "ab");
 }
 
-// TEST_CASE("jpstring - splitting produces an array of strings") {
-//   jpstring a("this is a really long string");
-//   list<jpstring>* parts = a.split();
+TEST_CASE("jpstring - splitting produces an array of strings") {
+  jpstring a("this is a really long string");
+  list<jpstring>* parts = a.split();
 
-//   CHECK(parts->head()->data() == "this");
-//   CHECK(parts->tail()->data() == "string");
-// }
+  CHECK(parts->head()->data() == "this");
+  CHECK(parts->tail()->data() == "string");
+}
