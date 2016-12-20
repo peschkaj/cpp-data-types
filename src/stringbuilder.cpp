@@ -1,28 +1,28 @@
-#include "llstring.h"
+#include "stringbuilder.h"
 #include <cstring>
 #include <cstdlib>
 
-llstring::llstring() {
+stringbuilder::stringbuilder() {
   chars = new clist();
   data_length = 0;
 }
 
-llstring::llstring(const char* str) {
+stringbuilder::stringbuilder(const char* str) {
   chars = new clist();
   append(str);
 }
 
-llstring::llstring(const llstring& rhs) {
+stringbuilder::stringbuilder(const stringbuilder& rhs) {
   chars = new clist();
   append(rhs.to_cstring());
 }
 
-llstring::~llstring() {
+stringbuilder::~stringbuilder() {
   delete chars;
   chars = NULL;
 }
 
-bool llstring::equals(const llstring& rhs) const {
+bool stringbuilder::equals(const stringbuilder& rhs) const {
   bool equals = false;
   const char* rhs_str = rhs.to_cstring();
 
@@ -34,7 +34,7 @@ bool llstring::equals(const llstring& rhs) const {
   return equals;
 }
 
-bool llstring::equals(const char* rhs) const {
+bool stringbuilder::equals(const char* rhs) const {
   bool equals = false;
 
   const char* lhs = to_cstring();
@@ -47,23 +47,23 @@ bool llstring::equals(const char* rhs) const {
   return equals;
 }
 
-bool llstring::operator==(const llstring& rhs) const {
+bool stringbuilder::operator==(const stringbuilder& rhs) const {
   return equals(rhs);
 }
 
-bool llstring::operator==(const char* rhs) const {
+bool stringbuilder::operator==(const char* rhs) const {
   return equals(rhs);
 }
 
-bool llstring::operator!=(llstring& rhs) const {
+bool stringbuilder::operator!=(stringbuilder& rhs) const {
   return !(*(this) == rhs);
 }
 
-bool llstring::operator!=(const char* rhs) const {
+bool stringbuilder::operator!=(const char* rhs) const {
   return !(*(this) == rhs);
 }
 
-bool llstring::operator<(llstring& rhs) const {
+bool stringbuilder::operator<(stringbuilder& rhs) const {
   bool less = false;
 
   const char* rhs_str = rhs.to_cstring();
@@ -76,7 +76,7 @@ bool llstring::operator<(llstring& rhs) const {
   return less;
 }
 
-bool llstring::operator<(const char* rhs) const {
+bool stringbuilder::operator<(const char* rhs) const {
   bool less = false;
 
   const char* lhs = to_cstring();
@@ -89,15 +89,15 @@ bool llstring::operator<(const char* rhs) const {
   return less;
 }
 
-bool llstring::operator<=(llstring& rhs) const {
+bool stringbuilder::operator<=(stringbuilder& rhs) const {
   return (*(this) == rhs) | (*(this) < rhs);
 }
 
-bool llstring::operator<=(const char* rhs) const {
+bool stringbuilder::operator<=(const char* rhs) const {
   return (*(this) == rhs) | (*(this) < rhs);
 }
 
-bool llstring::operator>(llstring& rhs) const {
+bool stringbuilder::operator>(stringbuilder& rhs) const {
   bool greater = false;
 
   const char* rhs_str = rhs.to_cstring();
@@ -110,7 +110,7 @@ bool llstring::operator>(llstring& rhs) const {
   return greater;
 }
 
-bool llstring::operator>(const char* rhs) const {
+bool stringbuilder::operator>(const char* rhs) const {
   bool greater = false;
 
   const char* lhs = to_cstring();
@@ -123,29 +123,29 @@ bool llstring::operator>(const char* rhs) const {
   return greater;
 }
 
-bool llstring::operator>=(llstring& rhs) const {
+bool stringbuilder::operator>=(stringbuilder& rhs) const {
   return (*(this) == rhs) | (*(this) > rhs);
 }
 
-bool llstring::operator>=(const char* rhs) const {
+bool stringbuilder::operator>=(const char* rhs) const {
   return (*(this) == rhs) | (*(this) > rhs);
 }
 
 
 
 
-/* Converts the llstring into some kind of char* or const char* by using
+/* Converts the stringbuilder into some kind of char* or const char* by using
    the appropriate method in the clist container
  */
-llstring::operator char* () {
+stringbuilder::operator char* () {
   return chars->to_cstring();
 }
 
-llstring::operator const char* () {
+stringbuilder::operator const char* () {
   return chars->to_cstring();
 }
 
-const char* llstring::to_cstring() const {
+const char* stringbuilder::to_cstring() const {
   return chars->to_cstring();
 }
 
@@ -157,10 +157,10 @@ const char* llstring::to_cstring() const {
 
    Once we know we're not trying to overwrite ourself, the next step is to
    move the current list of characters into a temporary clist. If the program
-   hits an exception while allocating memory, this llstring will still have
+   hits an exception while allocating memory, this stringbuilder will still have
    its original characters.
  */
-llstring& llstring::operator=(const llstring& rhs) {
+stringbuilder& stringbuilder::operator=(const stringbuilder& rhs) {
   if (this == &rhs) {
     return *this;
   }
@@ -175,13 +175,13 @@ llstring& llstring::operator=(const llstring& rhs) {
 
 
 
-int llstring::length() const {
+int stringbuilder::length() const {
   return data_length;
 }
 
 
 
-int llstring::append(const char* to_add) {
+int stringbuilder::append(const char* to_add) {
   int added = 0;
 
   added = chars->append(to_add);
@@ -192,7 +192,7 @@ int llstring::append(const char* to_add) {
 
 
 
-llstring& llstring::operator+=(const llstring& rhs) {
+stringbuilder& stringbuilder::operator+=(const stringbuilder& rhs) {
   char* buffer;
 
   buffer = new char[rhs.length() + 1];
@@ -203,7 +203,7 @@ llstring& llstring::operator+=(const llstring& rhs) {
   return *this;
 }
 
-llstring& llstring::operator+=(const char* rhs) {
+stringbuilder& stringbuilder::operator+=(const char* rhs) {
   append(rhs);
 
   return *this;
@@ -211,21 +211,21 @@ llstring& llstring::operator+=(const char* rhs) {
 
 
 
-llstring llstring::operator+(const llstring& rhs) {
-  llstring new_string(to_cstring());
+stringbuilder stringbuilder::operator+(const stringbuilder& rhs) {
+  stringbuilder new_string(to_cstring());
   new_string += rhs.to_cstring();
   return new_string;
 }
 
-llstring llstring::operator+(const char* rhs) {
-  llstring new_string(to_cstring());
+stringbuilder stringbuilder::operator+(const char* rhs) {
+  stringbuilder new_string(to_cstring());
   new_string += rhs;
   return new_string;
 }
 
 
 
-std::ostream& operator<<(std::ostream& out, const llstring& str) {
+std::ostream& operator<<(std::ostream& out, const stringbuilder& str) {
   out << str.to_cstring();
 
   return out;
