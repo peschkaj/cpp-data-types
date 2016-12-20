@@ -6,12 +6,12 @@ jpstring::jpstring(int initial_size)
   chars = new char[initial_size];
 }
 
-jpstring::jpstring(const char* chars, int initial_size)
+jpstring::jpstring(const char* rhs, int initial_size)
     : capacity(initial_size) {
-  char_length = strlen(chars) + 1;
-  this->chars = new char[char_length]();
+  char_length = strlen(rhs) + 1;
+  this->chars = NULL;
 
-  append(chars);
+  append(rhs);
 }
 
 jpstring::jpstring(const jpstring& rhs, int initial_size)
@@ -19,7 +19,7 @@ jpstring::jpstring(const jpstring& rhs, int initial_size)
   char_length = strlen(rhs.chars) + 1;
   chars = new char[char_length]();
 
-  append(chars);
+  append(rhs.chars);
 }
 
 jpstring::~jpstring() {
@@ -144,15 +144,21 @@ jpstring jpstring::operator+(const char* rhs) {
 
 
 
-void jpstring::append(const char* chars) {
-  int rhs_length = strlen(chars);
+void jpstring::append(const char* rhs) {
+  int rhs_length = strlen(rhs);
   int minimum_length = char_length + rhs_length;
 
   if (minimum_length >= capacity) {
     grow_chars(minimum_length);
   }
 
-  strcat(this->chars, chars);
+  if (this->chars) {
+    strncat(chars, rhs, rhs_length);
+  } else {
+    chars = new char[capacity]();
+    strncpy(chars, rhs, rhs_length);
+  }
+
   char_length = minimum_length;
 }
 
@@ -166,7 +172,7 @@ char* jpstring::to_cstring() const {
 }
 
 void jpstring::grow_chars(int minimum_length) {
-  int growth_factor = (minimum_length / capacity) + 1;
+  int growth_factor = (minimum_length / capacity);
 
   for (int i = 0; i < growth_factor; ++i) {
     capacity *= 2;
@@ -174,6 +180,8 @@ void jpstring::grow_chars(int minimum_length) {
 
   char* temp = chars;
   chars = new char[capacity];
+  strcpy(chars, temp);
+
   delete[] temp;
 }
 
@@ -213,15 +221,47 @@ std::istream& operator>>(std::istream& in, jpstring& rhs) {
 
 
 
-jpstring* jpstring::split(char delimiter) {
-  int word_count = 0;
-  jpstring* words;
-  std::stringstream ss;
-  char buffer[BUFFER_SIZE];
+// jpstring* jpstring::split(char delimiter, char eol) {
+//   int word_count = 0;
+//   jpstring* words;
+//   std::stringstream ss;
+//   char* buffer;
 
-  if (char_length == 0) {
-    return NULL;
-  }
+//   if (char_length == 0) {
+//     return NULL;
+//   }
+
+//   for (int i = 0; i < char_length; ++i) {
+//     if (*(chars + i) == delimiter) {
+//       ++word_count;
+//     }
+//   }
+
+//   buffer = new char[BUFFER_SIZE]();
+//   words = new jpstring[word_count + 1];
+
+//   ss << chars;
+
+//   for (int i = 0; i < word_count; ++i) {
+//     ss.get(buffer, BUFFER_SIZE, delimiter);
+//     words[i] += buffer;
+//     buffer = new char[BUFFER_SIZE]();
+//   }
+
+//   ss.get(buffer, BUFFER_SIZE, eol);
+//   words[word_count] = buffer;
+
+//   delete[] buffer;
+
+//   return words;
+// }
+
+list<jpstring>* jpstring::split(char delimiter, char eol) {
+  list<jpstring>* words = new list<jpstring>;
+  int word_count = 0;
+
+  std::stringstream ss;
+  char* buffer = new char[BUFFER_SIZE]();
 
   for (int i = 0; i < char_length; ++i) {
     if (*(chars + i) == delimiter) {
@@ -229,17 +269,15 @@ jpstring* jpstring::split(char delimiter) {
     }
   }
 
-  words = new jpstring[word_count + 1];
-
-  ss << chars;
-
   for (int i = 0; i < word_count; ++i) {
     ss.get(buffer, BUFFER_SIZE, delimiter);
-    words[i] = buffer;
+    words->append(buffer);
   }
 
-  ss.get(buffer, BUFFER_SIZE, '\0');
-  words[word_count] = buffer;
+  ss.get(buffer, BUFFER_SIZE, eol);
+  words->append(buffer);
+
+  delete[] buffer;
 
   return words;
 }

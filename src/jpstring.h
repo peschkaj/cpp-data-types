@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <sstream>
+#include "list.h"
 
 #ifndef JPSTRING
 #define JPSTRING
@@ -38,7 +39,8 @@ class jpstring {
   jpstring operator+(const int rhs);
   jpstring operator+(const double rhs);
 
-  jpstring* split(char delimiter);
+  // jpstring* split( char delimiter = ' ', char eol = '\0');
+  list<jpstring>* split(char delimiter= ' ', char eol = '\0');
 
   friend std::ostream& operator<<(std::ostream& out, const jpstring& rhs);
   friend std::istream& operator>>(std::istream& in,  jpstring& rhs);
