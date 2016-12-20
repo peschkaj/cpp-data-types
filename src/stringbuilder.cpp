@@ -193,10 +193,9 @@ int stringbuilder::append(const char* to_add) {
 
 
 stringbuilder& stringbuilder::operator+=(const stringbuilder& rhs) {
-  char* buffer;
+  const char* buffer;
 
-  buffer = new char[rhs.length() + 1];
-  strcpy(buffer, rhs.to_cstring());
+  buffer = rhs.to_cstring();
   append(buffer);
   delete[] buffer;
 
