@@ -9,8 +9,9 @@
 class jpstring {
  public:
   jpstring(int initial_size = DEFAULT_CAPACITY);
+  jpstring(const jpstring& rhs);
   jpstring(const char* chars, int initial_size = DEFAULT_CAPACITY);
-  jpstring(const jpstring& rhs, int initial_size = DEFAULT_CAPACITY);
+  //jpstring(const jpstring& rhs, int initial_size = DEFAULT_CAPACITY);
   ~jpstring();
 
   operator char* ();
