@@ -99,9 +99,8 @@ bool jpstring::operator>=(const char* rhs) const {
 
    The initial check ensures we're not assigning to our self.
 
-   Once we know that we're not assigning to our self, we create another
-   pointer to `chars`. If memory allocation fails, we'll still have the
-   original characters in this string.
+   Once we know we're not assigning to our self, operator=(const char*)
+   is for assignment.
  */
 jpstring& jpstring::operator=(const jpstring& rhs) {
   if (this == &rhs) {
@@ -117,7 +116,9 @@ jpstring& jpstring::operator=(const jpstring& rhs) {
 
 /* Assignment operator overload for const char*
 
-
+   Creates a temporary pointer to hold `chars`. If the memory allocation
+   for the new `chars` fails, we still have the original characters in the
+   string.
  */
 jpstring& jpstring::operator=(const char* rhs) {
   char* temp = chars;

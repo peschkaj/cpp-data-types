@@ -38,5 +38,5 @@ TEST_CASE("jpstring - assignment tests") {
   jpstring c("this is another string");
   c = a;
 
-  CHECK(c == a);
+  CHECK(c == b);
 }
