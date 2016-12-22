@@ -108,10 +108,7 @@ jpstring& jpstring::operator=(const jpstring& rhs) {
     return *this;
   }
 
-  char* temp = chars;
-  capacity = rhs.capacity;
-  append(rhs.chars);
-  delete[] temp;
+  *this = rhs.chars;
 
   return *this;
 }
