@@ -102,3 +102,41 @@ TEST_CASE("list - removing an item that doesn't exist returns false") {
 
   CHECK(success == false);
 }
+
+TEST_CASE("list - remove_one only removes one node") {
+  list<int> l;
+
+  l.insert(1);
+  l.insert(2);
+  l.insert(1);
+
+  bool success = l.remove_one(1);
+
+  CHECK(success == true);
+  CHECK(l.head()->data() == 2);
+  CHECK(l.tail()->data() == 1);
+}
+
+TEST_CASE("list - remove_one on an empty list does nothing") {
+  list<int> l;
+
+  bool success = l.remove_one(0);
+
+  CHECK(success == false);
+}
+
+TEST_CASE("list - emptying a list with remove_one resets tail pointer correctly") {
+  list<int> l;
+
+  l.insert(1);
+
+  bool success = l.remove_one(1);
+
+  CHECK(success == true);
+
+  if (l.tail() == NULL) {
+    CHECK(1 == 1);
+  } else {
+    CHECK(1 == 2);
+  }
+}

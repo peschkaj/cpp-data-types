@@ -84,6 +84,11 @@ class list {
      The number of nodes deleted is returned from the method.
    */
   int remove(const T& to_remove);
+
+
+
+  /* Only removes the first occurrence of to_remove */
+  bool remove_one(const T& to_remove);
  private:
   /* A pointer to the head of the list */
   list_node<T>* list_head;
@@ -116,6 +121,10 @@ class list {
      The next node in the list, after removal.
    */
   list_node<T>* remove(list_node<T>* current, const T& to_remove, int& removed);
+
+
+
+  void remove_one(list_node<T>* current, const T& to_remove, bool& removed);
 };
 
 
@@ -302,5 +311,48 @@ list_node<T>* list<T>::remove(list_node<T>* current,
   }
 
   return current;
+}
+
+
+
+/* Removes the first occurrence of to_remove */
+template <typename T>
+bool list<T>::remove_one(const T &to_remove) {
+  bool removed = false;
+
+  remove_one(list_head, to_remove, removed);
+
+  return removed;
+}
+
+
+template <typename T>
+void list<T>::remove_one(list_node<T>* current, const T& to_remove, bool& removed) {
+  list_node<T>* temp;
+  if (current == NULL) {
+    return;
+  }
+
+  if (current->data() == to_remove) {
+    temp = current;
+
+    if (current == list_head) {
+      list_head = current->next();
+    }
+
+    if (current == list_tail) {
+      list_tail = list_head;
+    }
+
+    current = current->next();
+    temp->next(NULL);
+    delete temp;
+
+    removed = true;
+  }
+
+  if (!removed) {
+    remove_one(current->next(), to_remove, removed);
+  }
 }
 #endif
