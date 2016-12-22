@@ -1,5 +1,4 @@
 #include "list_node.h"
-#include <cstdlib>
 
 #ifndef LIST
 #define LIST
@@ -10,13 +9,14 @@ class list {
   list();
   ~list();
 
+  list_node<T>* first();
   list_node<T>* head();
   void head(list_node<T>* new_head);
 
+  list_node<T>* last();
   list_node<T>* tail();
 
   int count() const;
-  int display() const;
 
   bool insert(T to_add);
   bool append(T to_add);
@@ -27,7 +27,6 @@ class list {
   int node_count;
 
   list_node<T>* remove(list_node<T>* current, const T& to_remove, bool& success);
-  void display(list_node<T>* current) const;
 };
 
 
@@ -51,6 +50,11 @@ list<T>::~list() {
 
 
 template <typename T>
+list_node<T>* list<T>::first() {
+  return head();
+}
+
+template <typename T>
 list_node<T>* list<T>::head() {
   return list_head;
 }
@@ -70,6 +74,13 @@ void list<T>::head(list_node<T>* new_head) {
   }
 }
 
+
+
+template <typename T>
+list_node<T>* list<T>::last() {
+  return tail();
+}
+
 template <typename T>
 list_node<T>* list<T>::tail() {
   return list_tail;
@@ -80,28 +91,6 @@ list_node<T>* list<T>::tail() {
 template <typename T>
 int list<T>::count() const {
   return node_count;
-}
-
-
-
-template <typename T>
-int list<T>::display() const {
-  display(list_head);
-
-  return node_count;
-}
-
-
-
-template <typename T>
-void list<T>::display(list_node<T>* current) const {
-  if (current == NULL) {
-    return;
-  }
-
-  current->display();
-
-  display(current->next());
 }
 
 

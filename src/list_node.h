@@ -74,16 +74,4 @@ void list_node<T>::data(T node_data) {
   T* new_data = new T(node_data);
   this->node_data = new_data;
 }
-
-
-
-// FIXME replace with <<
-// TODO implement (char *) conversion
-template <typename T>
-void list_node<T>::display() const {
-  node_data->display();
-}
-
-
-
 #endif
