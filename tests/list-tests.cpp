@@ -58,6 +58,17 @@ TEST_CASE("list - count is correct after inserts") {
   CHECK(l.count() == 3);
 }
 
+TEST_CASE("list - count is correct after append") {
+  list<int> l;
+
+  l.insert(1);
+  l.insert(2);
+  l.insert(3);
+
+  l.append(4);
+  CHECK(l.count() == 4);
+}
+
 TEST_CASE("list - count is correct after removal") {
   list<int> l;
   int count;
