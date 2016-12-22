@@ -1,3 +1,10 @@
+/* Jeremiah Peschka
+   <jpeschka@pdx.edu>
+
+   Implements a string-like class with convenient functions for working
+   with strings of characters, rather than using char arrays.
+ */
+
 #include <iostream>
 #include <cstring>
 #include <sstream>
@@ -11,7 +18,6 @@ class jpstring {
   jpstring(int initial_size = DEFAULT_CAPACITY);
   jpstring(const jpstring& rhs);
   jpstring(const char* chars, int initial_size = DEFAULT_CAPACITY);
-  //jpstring(const jpstring& rhs, int initial_size = DEFAULT_CAPACITY);
   ~jpstring();
 
   operator char* ();
@@ -31,6 +37,7 @@ class jpstring {
   bool operator>=(const char* rhs) const;
 
   jpstring& operator=(const jpstring& rhs);
+  jpstring& operator=(const char* rhs);
 
   jpstring& operator+=(const jpstring& rhs);
   jpstring& operator+=(const char* rhs);

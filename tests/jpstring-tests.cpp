@@ -23,4 +23,16 @@ TEST_CASE("jpstring - splitting produces an array of strings") {
 
   CHECK(parts->head()->data() == "this");
   CHECK(parts->tail()->data() == "string");
+
+  delete parts;
+}
+
+TEST_CASE("jpstring - assignment tests") {
+  jpstring a("this is a really long string");
+  a += ".";
+
+  const char* b = "this is an even longer string!";
+
+  a = b;
+  CHECK(a == b);
 }

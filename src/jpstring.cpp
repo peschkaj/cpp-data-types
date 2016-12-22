@@ -15,19 +15,11 @@ jpstring::jpstring(const jpstring& rhs) {
 
 jpstring::jpstring(const char* rhs, int initial_size)
     : capacity(initial_size) {
-  char_length = strlen(rhs) + 1;
+  char_length = 0;
   this->chars = NULL;
 
   append(rhs);
 }
-
-// jpstring::jpstring(const jpstring& rhs, int initial_size)
-//     : capacity(initial_size) {
-//   char_length = strlen(rhs.chars) + 1;
-//   chars = new char[char_length]();
-
-//   append(rhs.chars);
-// }
 
 jpstring::~jpstring() {
   if (chars != NULL) {
@@ -117,10 +109,30 @@ jpstring& jpstring::operator=(const jpstring& rhs) {
   }
 
   char* temp = chars;
-  chars = new char[rhs.char_length] + 1;
   capacity = rhs.capacity;
   append(rhs.chars);
   delete[] temp;
+
+  return *this;
+}
+
+
+
+/* Assignment operator overload for const char*
+
+
+ */
+jpstring& jpstring::operator=(const char* rhs) {
+  char* temp = chars;
+  int len = strlen(rhs) + 1;
+
+  chars = new char[len]();
+  append(rhs);
+
+  if (temp) {
+    delete[] temp;
+    temp = NULL;
+  }
 
   return *this;
 }
@@ -231,40 +243,6 @@ std::istream& operator>>(std::istream& in, jpstring& rhs) {
 
 
 
-// jpstring* jpstring::split(char delimiter, char eol) {
-//   int word_count = 0;
-//   jpstring* words;
-//   std::stringstream ss;
-//   char* buffer;
-
-//   if (char_length == 0) {
-//     return NULL;
-//   }
-
-//   for (int i = 0; i < char_length; ++i) {
-//     if (*(chars + i) == delimiter) {
-//       ++word_count;
-//     }
-//   }
-
-//   buffer = new char[BUFFER_SIZE]();
-//   words = new jpstring[word_count + 1];
-
-//   ss << chars;
-
-//   for (int i = 0; i < word_count; ++i) {
-//     ss.get(buffer, BUFFER_SIZE, delimiter);
-//     words[i] += buffer;
-//     buffer = new char[BUFFER_SIZE]();
-//   }
-
-//   ss.get(buffer, BUFFER_SIZE, eol);
-//   words[word_count] = buffer;
-
-//   delete[] buffer;
-
-//   return words;
-// }
 
 list<jpstring>* jpstring::split(char delimiter, char eol) {
   list<jpstring>* words = new list<jpstring>;
