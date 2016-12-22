@@ -29,7 +29,6 @@ TEST_CASE("jpstring - splitting produces an array of strings") {
 
 TEST_CASE("jpstring - assignment tests") {
   jpstring a("this is a really long string");
-  a += ".";
 
   const char* b = "this is an even longer string!";
 
