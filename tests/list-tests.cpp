@@ -72,3 +72,22 @@ TEST_CASE("list - count is correct after removal") {
 
   CHECK(l.count() == (count - 1));
 }
+
+TEST_CASE("list - removing from an empty list returns false") {
+  list<int> l;
+  bool success;
+
+  success = l.remove(9);
+
+  CHECK(success == false);
+}
+
+TEST_CASE("list - removing an item that doesn't exist returns false") {
+  list<int> l;
+  bool success;
+  l.insert(1);
+
+  success = l.remove(9);
+
+  CHECK(success == false);
+}
