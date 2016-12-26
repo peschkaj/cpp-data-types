@@ -335,6 +335,19 @@ bool list<T>::remove_one(const T &to_remove) {
 }
 
 
+
+/* Recursive helper for `remove_one`.
+
+   If the current node is NULL, return because this is the end of the list.
+
+   Each node in the list is compared to `to_remove`, if the node matches
+   (based on operator==) then the node is removed and removed is set to
+   true.
+
+   If the current node was not removed, the function recurs until either
+    a) an element is removed
+    b) the end of the list is encountered
+ */
 template <typename T>
 void list<T>::remove_one(list_node<T>* current, const T& to_remove, bool& removed) {
   list_node<T>* temp;
@@ -367,6 +380,12 @@ void list<T>::remove_one(list_node<T>* current, const T& to_remove, bool& remove
 
 
 
+/* Creates an array representation of this list.
+
+   Returns the number of elements in the array. If the list is empty,
+   0 is returned.
+   The array representation of the list is passed by reference.
+ */
 template <typename T>
 int list<T>::to_array(T*& arr) const {
   list_node<T>* current;
