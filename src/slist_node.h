@@ -1,16 +1,16 @@
 #include <iostream>
 
-#ifndef LIST_NODE
-#define LIST_NODE
+#ifndef SLIST_NODE
+#define SLIST_NODE
 
 template <typename T>
-class list_node {
+class slist_node {
  public:
-  list_node(T data);
-  ~list_node();
+  slist_node(T data);
+  ~slist_node();
 
-  list_node* next();
-  void next(list_node* next_node);
+  slist_node* next();
+  void next(slist_node* next_node);
 
   T data();
   void data(T new_data);
@@ -18,14 +18,14 @@ class list_node {
   void display() const;
 
  private:
-  list_node* next_node;
+  slist_node* next_node;
   T* node_data;
 };
 
 
 
 template <typename T>
-list_node<T>::list_node(T data) {
+slist_node<T>::slist_node(T data) {
   this->data(data);
   this->next_node = NULL;
 }
@@ -33,7 +33,7 @@ list_node<T>::list_node(T data) {
 
 
 template <typename T>
-list_node<T>::~list_node() {
+slist_node<T>::~slist_node() {
   if (node_data) {
     delete node_data;
   }
@@ -49,28 +49,28 @@ list_node<T>::~list_node() {
 
 
 template <typename T>
-list_node<T>* list_node<T>::next() {
+slist_node<T>* slist_node<T>::next() {
   return next_node;
 }
 
 
 
 template <typename T>
-void list_node<T>::next(list_node<T>* next_node) {
+void slist_node<T>::next(slist_node<T>* next_node) {
   this->next_node = next_node;
 }
 
 
 
 template <typename T>
-T list_node<T>::data() {
+T slist_node<T>::data() {
   return *(node_data);
 }
 
 
 
 template <typename T>
-void list_node<T>::data(T node_data) {
+void slist_node<T>::data(T node_data) {
   T* new_data = new T(node_data);
   this->node_data = new_data;
 }

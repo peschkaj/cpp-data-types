@@ -1,6 +1,6 @@
 /* Jeremiah Peschka <jpeschka@pdx.edu>
 
-   A templatized list class.
+   A templatized singly linked list class.
 
    The list manages all access to a linear linked list of nodes.
 
@@ -14,17 +14,17 @@
    - remove(T)          - removes all nodes that match the parameter
  */
 
-#include "list_node.h"
+#include "slist_node.h"
 #include <exception>
 
-#ifndef LIST
-#define LIST
+#ifndef SLIST
+#define SLIST
 
 template<typename T>
-class list {
+class slist {
  public:
   /* Create a new list */
-  list();
+  slist();
 
 
 
@@ -32,17 +32,17 @@ class list {
 
      Resources stored in each list node are also destroyed.
    */
-  ~list();
+  ~slist();
 
 
 
   /* Returns the first node of the list */
-  list_node<T>* first();
+  slist_node<T>* first();
 
 
 
   /* Returns the first node of the list */
-  list_node<T>* head();
+  slist_node<T>* head();
 
 
 
@@ -51,17 +51,17 @@ class list {
      This _replaces_ the existing head of the list, unlinks the old
      head, and removes the old head's contents.
    */
-  void head(list_node<T>* new_head);
+  void head(slist_node<T>* new_head);
 
 
 
   /* Returns the last node of the list */
-  list_node<T>* last();
+  slist_node<T>* last();
 
 
 
   /* Returns the last node of the list */
-  list_node<T>* tail();
+  slist_node<T>* tail();
 
 
 
@@ -101,12 +101,12 @@ class list {
   int to_array(T*& arr) const;
  private:
   /* A pointer to the head of the list */
-  list_node<T>* list_head;
+  slist_node<T>* list_head;
 
 
 
   /* A pointer to the tail of the list */
-  list_node<T>* list_tail;
+  slist_node<T>* list_tail;
 
 
 
@@ -130,11 +130,11 @@ class list {
      Outputs:
      The next node in the list, after removal.
    */
-  list_node<T>* remove(list_node<T>* current, const T& to_remove, int& removed);
+  slist_node<T>* remove(slist_node<T>* current, const T& to_remove, int& removed);
 
 
 
-  void remove_one(list_node<T>* current, const T& to_remove, bool& removed);
+  void remove_one(slist_node<T>* current, const T& to_remove, bool& removed);
 };
 
 
@@ -145,7 +145,7 @@ class list {
    the node count is set to 0
  */
 template <typename T>
-list<T>::list() {
+slist<T>::slist() {
   list_head = NULL;
   list_tail = NULL;
   node_count = 0;
@@ -161,7 +161,7 @@ list<T>::list() {
    head and tail are set to NULL after the nodes of the list are destroyed
  */
 template <typename T>
-list<T>::~list() {
+slist<T>::~slist() {
   delete list_head;
   list_head = NULL;
   list_tail = NULL;
@@ -171,7 +171,7 @@ list<T>::~list() {
 
 /* Returns a pointer to the head of the list. */
 template <typename T>
-list_node<T>* list<T>::first() {
+slist_node<T>* slist<T>::first() {
   return head();
 }
 
@@ -179,7 +179,7 @@ list_node<T>* list<T>::first() {
 
 /* Returns a pointer to the head of the list. */
 template <typename T>
-list_node<T>* list<T>::head() {
+slist_node<T>* slist<T>::head() {
   return list_head;
 }
 
@@ -187,8 +187,8 @@ list_node<T>* list<T>::head() {
 
 /* Destroys the existing head pointer and replaces it with new_head */
 template <typename T>
-void list<T>::head(list_node<T>* new_head) {
-  list_node<T>* temp = list_head;
+void slist<T>::head(slist_node<T>* new_head) {
+  slist_node<T>* temp = list_head;
   list_head = new_head;
 
   if (temp != NULL) {
@@ -203,7 +203,7 @@ void list<T>::head(list_node<T>* new_head) {
 
 /* Returns a pointer to the last node in the list */
 template <typename T>
-list_node<T>* list<T>::last() {
+slist_node<T>* slist<T>::last() {
   return tail();
 }
 
@@ -211,7 +211,7 @@ list_node<T>* list<T>::last() {
 
 /* Returns a pointer to the last node in the list */
 template <typename T>
-list_node<T>* list<T>::tail() {
+slist_node<T>* slist<T>::tail() {
   return list_tail;
 }
 
@@ -219,7 +219,7 @@ list_node<T>* list<T>::tail() {
 
 /* Returns a count of the number of nodes in the list */
 template <typename T>
-int list<T>::count() const {
+int slist<T>::count() const {
   return node_count;
 }
 
@@ -235,8 +235,8 @@ int list<T>::count() const {
    the list.
  */
 template <typename T>
-bool list<T>::insert(T to_add) {
-  list_node<T>* new_node = new list_node<T>(to_add);
+bool slist<T>::insert(T to_add) {
+  slist_node<T>* new_node = new slist_node<T>(to_add);
 
   if (list_head == NULL) {
     list_tail = new_node;
@@ -253,11 +253,11 @@ bool list<T>::insert(T to_add) {
 
 /* Adds a new node at the end of the list. */
 template <typename T>
-bool list<T>::append(T to_add) {
+bool slist<T>::append(T to_add) {
   bool success = false;
 
   try {
-    list_node<T>* new_node = new list_node<T>(to_add);
+    slist_node<T>* new_node = new slist_node<T>(to_add);
 
     if (list_tail == NULL) {
       list_head = new_node;
@@ -284,7 +284,7 @@ bool list<T>::append(T to_add) {
    Returns the count of nodes removed.
  */
 template <typename T>
-int list<T>::remove(const T& to_remove) {
+int slist<T>::remove(const T& to_remove) {
   int removed = 0;
 
   list_head = remove(list_head, to_remove, removed);
@@ -301,9 +301,9 @@ int list<T>::remove(const T& to_remove) {
    **N.B.** If you need to use a list of char*, see `clist.h`
  */
 template <typename T>
-list_node<T>* list<T>::remove(list_node<T>* current,
-                              const T& to_remove,
-                              int& removed) {
+slist_node<T>* slist<T>::remove(slist_node<T>* current,
+                                const T& to_remove,
+                                int& removed) {
   if (current == NULL) {
     return NULL;
   }
@@ -317,7 +317,7 @@ list_node<T>* list<T>::remove(list_node<T>* current,
   }
 
   if (current->data() == to_remove) {
-    list_node<T>* temp = current;
+    slist_node<T>* temp = current;
     current = current->next();
 
     temp->next(NULL);
@@ -335,7 +335,7 @@ list_node<T>* list<T>::remove(list_node<T>* current,
 
 /* Removes the first occurrence of to_remove */
 template <typename T>
-bool list<T>::remove_one(const T &to_remove) {
+bool slist<T>::remove_one(const T &to_remove) {
   bool removed = false;
 
   remove_one(list_head, to_remove, removed);
@@ -358,8 +358,8 @@ bool list<T>::remove_one(const T &to_remove) {
     b) the end of the list is encountered
  */
 template <typename T>
-void list<T>::remove_one(list_node<T>* current, const T& to_remove, bool& removed) {
-  list_node<T>* temp;
+void slist<T>::remove_one(slist_node<T>* current, const T& to_remove, bool& removed) {
+  slist_node<T>* temp;
   if (current == NULL) {
     return;
   }
@@ -396,8 +396,8 @@ void list<T>::remove_one(list_node<T>* current, const T& to_remove, bool& remove
    The array representation of the list is passed by reference.
  */
 template <typename T>
-int list<T>::to_array(T*& arr) const {
-  list_node<T>* current;
+int slist<T>::to_array(T*& arr) const {
+  slist_node<T>* current;
 
   if (list_head == NULL) {
     return 0;

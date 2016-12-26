@@ -12,7 +12,7 @@
     - copy constructor
  */
 
-#include "list.h"
+#include "slist.h"
 
 #ifndef QUEUE
 #define QUEUE
@@ -70,7 +70,7 @@ class queue {
   bool is_empty();
  private:
   /* The queue */
-  list<T>* q;
+  slist<T>* q;
 };
 
 
@@ -79,7 +79,7 @@ class queue {
 template <typename T>
 queue<T>::queue() {
   // ummmm.... do something?
-  q = new list<T>;
+  q = new slist<T>;
 }
 
 

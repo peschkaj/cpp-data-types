@@ -1,8 +1,8 @@
 #include "doctest.h"
-#include "../src/list.h"
+#include "../src/slist.h"
 
 TEST_CASE("list - Creating a list doesn't explode") {
-  list<int> l;
+  slist<int> l;
   l.insert(4);
 
   CHECK(l.head()->data() == 4);
@@ -10,7 +10,7 @@ TEST_CASE("list - Creating a list doesn't explode") {
 }
 
 TEST_CASE("list - Tail points to the last element") {
-  list<int> l;
+  slist<int> l;
   l.insert(4);
   l.insert(5);
   l.insert(6);
@@ -26,7 +26,7 @@ TEST_CASE("list - Tail points to the last element") {
 }
 
 TEST_CASE("list - Can append at the end") {
-  list<int> l;
+  slist<int> l;
   l.insert(4);
   l.insert(3);
 
@@ -36,7 +36,7 @@ TEST_CASE("list - Can append at the end") {
 }
 
 TEST_CASE("list - Insert adds at the beginning") {
-  list<int> l;
+  slist<int> l;
   l.insert(1);
 
   CHECK(l.head()->data() == 1);
@@ -46,7 +46,7 @@ TEST_CASE("list - Insert adds at the beginning") {
 }
 
 TEST_CASE("list - count is correct after inserts") {
-  list<int> l;
+  slist<int> l;
 
   l.insert(1);
   CHECK(l.count() == 1);
@@ -59,7 +59,7 @@ TEST_CASE("list - count is correct after inserts") {
 }
 
 TEST_CASE("list - count is correct after append") {
-  list<int> l;
+  slist<int> l;
 
   l.insert(1);
   l.insert(2);
@@ -70,7 +70,7 @@ TEST_CASE("list - count is correct after append") {
 }
 
 TEST_CASE("list - count is correct after removal") {
-  list<int> l;
+  slist<int> l;
   int count;
 
   l.insert(1);
@@ -85,7 +85,7 @@ TEST_CASE("list - count is correct after removal") {
 }
 
 TEST_CASE("list - removing from an empty list returns false") {
-  list<int> l;
+  slist<int> l;
   bool success;
 
   success = l.remove(9);
@@ -94,7 +94,7 @@ TEST_CASE("list - removing from an empty list returns false") {
 }
 
 TEST_CASE("list - removing an item that doesn't exist returns false") {
-  list<int> l;
+  slist<int> l;
   bool success;
   l.insert(1);
 
@@ -104,7 +104,7 @@ TEST_CASE("list - removing an item that doesn't exist returns false") {
 }
 
 TEST_CASE("list - remove_one only removes one node") {
-  list<int> l;
+  slist<int> l;
 
   l.insert(1);
   l.insert(2);
@@ -118,7 +118,7 @@ TEST_CASE("list - remove_one only removes one node") {
 }
 
 TEST_CASE("list - remove_one on an empty list does nothing") {
-  list<int> l;
+  slist<int> l;
 
   bool success = l.remove_one(0);
 
@@ -126,7 +126,7 @@ TEST_CASE("list - remove_one on an empty list does nothing") {
 }
 
 TEST_CASE("list - emptying a list with remove_one resets tail pointer correctly") {
-  list<int> l;
+  slist<int> l;
 
   l.insert(1);
 
@@ -142,7 +142,7 @@ TEST_CASE("list - emptying a list with remove_one resets tail pointer correctly"
 }
 
 TEST_CASE("list - a list can be converted to an array") {
-  list<int> l;
+  slist<int> l;
   l.insert(0);
   l.append(1);
   l.append(2);

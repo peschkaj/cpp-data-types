@@ -19,7 +19,7 @@
 #include <iostream>
 #include <cstring>
 #include <sstream>
-#include "list.h"
+#include "slist.h"
 
 #ifndef JPSTRING
 #define JPSTRING
@@ -159,7 +159,7 @@ class jpstring {
      The `eol` parameter is necessary because this string uses a
      c-string as the representation of the string.
    */
-  list<jpstring>* split(char delimiter= ' ', char eol = '\0');
+  slist<jpstring>* split(char delimiter= ' ', char eol = '\0');
 
 
 

@@ -470,8 +470,8 @@ std::istream& operator>>(std::istream& in, jpstring& rhs) {
    A stringstream is used to stream characters out of `chars` and into
    the buffer.
  */
-list<jpstring>* jpstring::split(char delimiter, char eol) {
-  list<jpstring>* words = new list<jpstring>;
+slist<jpstring>* jpstring::split(char delimiter, char eol) {
+  slist<jpstring>* words = new slist<jpstring>;
   int word_count = 0;
 
   std::stringstream ss;
