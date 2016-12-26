@@ -15,6 +15,7 @@
  */
 
 #include "list_node.h"
+#include <exception>
 
 #ifndef LIST
 #define LIST
@@ -253,19 +254,27 @@ bool list<T>::insert(T to_add) {
 /* Adds a new node at the end of the list. */
 template <typename T>
 bool list<T>::append(T to_add) {
-  list_node<T>* new_node = new list_node<T>(to_add);
+  bool success = false;
 
-  if (list_tail == NULL) {
-    list_head = new_node;
-    list_tail = new_node;
-  } else {
-    list_tail->next(new_node);
-    list_tail = new_node;
+  try {
+    list_node<T>* new_node = new list_node<T>(to_add);
+
+    if (list_tail == NULL) {
+      list_head = new_node;
+      list_tail = new_node;
+    } else {
+      list_tail->next(new_node);
+      list_tail = new_node;
+    }
+
+    ++node_count;
+
+    success = true;
+  } catch (std::exception& e) {
+    // do nothing, success is still false
   }
 
-  ++node_count;
-
-  return true;
+  return success;
 }
 
 
