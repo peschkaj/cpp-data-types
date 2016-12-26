@@ -4,6 +4,10 @@
 
    The list manages all access to a linear linked list of nodes.
 
+   T should implement the following:
+   - operator=
+   - copy constructor
+
    Access to the list is limited to a few basic functions:
    - first()/head()     - retrieves the head of the list.
    - last()/tail()      - retrieves the tail of the list.

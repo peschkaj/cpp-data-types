@@ -1,15 +1,14 @@
 /* Jeremiah Peschka <jpeschka@pdx.edu>
 
+   T should implement the following:
+   - operator=
+   - copy constructor
+
    A templatized queue. Provides the following operations:
     - enqueue(T item) - adds item at the beginning of the list
     - dequeue(T item) - removes the first item from the list
     - peek(T item)    - returns a copy of the first item in the list
     - is_empty()      - checks if the list is empty
-
-
-   T should implement the following:
-    - operator=
-    - copy constructor
  */
 
 #include "slist.h"
