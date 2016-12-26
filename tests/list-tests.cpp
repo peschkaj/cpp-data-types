@@ -140,3 +140,21 @@ TEST_CASE("list - emptying a list with remove_one resets tail pointer correctly"
     CHECK(1 == 2);
   }
 }
+
+TEST_CASE("list - a list can be converted to an array") {
+  list<int> l;
+  l.insert(0);
+  l.append(1);
+  l.append(2);
+  l.append(3);
+
+  int* arr;
+  int count = l.to_array(arr);
+
+  CHECK(count == 4);
+  CHECK(arr[0] == 0);
+  CHECK(arr[1] == 1);
+  CHECK(arr[2] == 2);
+  CHECK(arr[3] == 3);
+
+}

@@ -89,6 +89,15 @@ class list {
 
   /* Only removes the first occurrence of to_remove */
   bool remove_one(const T& to_remove);
+
+
+
+  /* Converts this list into an array of T
+
+     The array is returned via the `arr` parameter.
+     Returns the number of elements in the array.
+   */
+  int to_array(T*& arr) const;
  private:
   /* A pointer to the head of the list */
   list_node<T>* list_head;
@@ -354,5 +363,26 @@ void list<T>::remove_one(list_node<T>* current, const T& to_remove, bool& remove
   if (!removed) {
     remove_one(current->next(), to_remove, removed);
   }
+}
+
+
+
+template <typename T>
+int list<T>::to_array(T*& arr) const {
+  list_node<T>* current;
+
+  if (list_head == NULL) {
+    return 0;
+  }
+
+  arr = new T[node_count];
+  current = list_head;
+
+  for (int i = 0; i < node_count; ++i) {
+    arr[i] = current->data();
+    current = current->next();
+  }
+
+  return node_count;
 }
 #endif
