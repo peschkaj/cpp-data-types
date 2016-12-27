@@ -23,5 +23,5 @@ add_custom_target(run
   WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
   )
 
-add_executable(tests "tests/main.cpp" "tests/stringbuilder-tests.cpp" "tests/list-tests.cpp" "tests/jpstring-tests.cpp" "tests/queue-tests.cpp")
+add_executable(tests "tests/main.cpp" "tests/stringbuilder-tests.cpp" "tests/list-tests.cpp" "tests/jpstring-tests.cpp" "tests/queue-tests.cpp" "tests/slist-tests.cpp")
 target_link_libraries(tests cpp-data-types)

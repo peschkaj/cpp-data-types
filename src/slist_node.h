@@ -14,7 +14,7 @@ class slist_node {
   void next(slist_node* next_node);
 
   T data();
-  void data(T new_data);
+  void data(T data);
 
   void display() const;
 
@@ -81,8 +81,8 @@ T slist_node<T>::data() {
 
 
 template <typename T>
-void slist_node<T>::data(T node_data) {
-  T* new_data = new T(node_data);
+void slist_node<T>::data(T data) {
+  T* new_data = new T(data);
   this->node_data = new_data;
 }
 

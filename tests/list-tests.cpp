@@ -1,160 +1,89 @@
 #include "doctest.h"
-#include "../src/slist.h"
+#include "../src/list.h"
+#include <iostream>
 
 TEST_CASE("list - Creating a list doesn't explode") {
-  slist<int> l;
-  l.insert(4);
+  list<int> l;
+  l.push_front(4);
 
   CHECK(l.head()->data() == 4);
   CHECK(l.tail()->data() == 4);
 }
 
 TEST_CASE("list - Tail points to the last element") {
-  slist<int> l;
-  l.insert(4);
-  l.insert(5);
-  l.insert(6);
+  list<int> l;
+  l.append(1);
+  l.append(2);
+  l.append(3);
+  l.append(4);
+  l.append(5);
+  l.append(6);
+
+  CHECK(l.count() == 6);
+  CHECK(l.tail()->data() == 6);
+}
+
+TEST_CASE("list = Head points to the first element") {
+  list<int> l;
+  l.push_back(6);
+  l.push_back(5);
+  l.push_back(4);
+  l.push_back(3);
+  l.push_back(2);
+  l.push_back(1);
+
+  CHECK(l.count() == 6);
   CHECK(l.head()->data() == 6);
-  CHECK(l.tail()->data() == 4);
-
-  bool removed = l.remove(4);
-
-
-  if (removed) {
-    CHECK(l.tail()->data() != 4);
-  }
 }
 
 TEST_CASE("list - Can append at the end") {
-  slist<int> l;
-  l.insert(4);
-  l.insert(3);
+  list<int> l;
+  l.push_front(1);
+  l.push_back(2);
 
-  l.append(5);
-
-  CHECK(l.tail()->data() == 5);
+  CHECK(l.count() == 2);
+  CHECK(l.tail()->data() == 2);
 }
 
-TEST_CASE("list - Insert adds at the beginning") {
-  slist<int> l;
-  l.insert(1);
-
-  CHECK(l.head()->data() == 1);
-
-  l.insert(2);
-  CHECK(l.head()->data() == 2);
-}
-
-TEST_CASE("list - count is correct after inserts") {
-  slist<int> l;
+TEST_CASE("list - Count is correct after insert") {
+  list<int> l;
 
   l.insert(1);
   CHECK(l.count() == 1);
 
-  l.insert(2);
+  l.append(2);
   CHECK(l.count() == 2);
 
-  l.insert(3);
+  l.push_front(0);
   CHECK(l.count() == 3);
-}
 
-TEST_CASE("list - count is correct after append") {
-  slist<int> l;
-
-  l.insert(1);
-  l.insert(2);
-  l.insert(3);
-
-  l.append(4);
+  l.push_back(3);
   CHECK(l.count() == 4);
 }
 
-TEST_CASE("list - count is correct after removal") {
-  slist<int> l;
-  int count;
-
-  l.insert(1);
-  l.insert(2);
-  l.insert(3);
-
-  count = l.count();
-
-  l.remove(1);
-
-  CHECK(l.count() == (count - 1));
-}
-
-TEST_CASE("list - removing from an empty list returns false") {
-  slist<int> l;
-  bool success;
-
-  success = l.remove(9);
+TEST_CASE("list - pop on an empty list does nothing") {
+  list<int> l;
+  int popped;
+  bool success = l.pop_front(popped);
 
   CHECK(success == false);
 }
 
-TEST_CASE("list - removing an item that doesn't exist returns false") {
-  slist<int> l;
-  bool success;
-  l.insert(1);
-
-  success = l.remove(9);
-
-  CHECK(success == false);
-}
-
-TEST_CASE("list - remove_one only removes one node") {
-  slist<int> l;
+TEST_CASE("list - Count is correct after remove") {
+  list<int> l;
 
   l.insert(1);
-  l.insert(2);
-  l.insert(1);
-
-  bool success = l.remove_one(1);
-
-  CHECK(success == true);
-  CHECK(l.head()->data() == 2);
-  CHECK(l.tail()->data() == 1);
-}
-
-TEST_CASE("list - remove_one on an empty list does nothing") {
-  slist<int> l;
-
-  bool success = l.remove_one(0);
-
-  CHECK(success == false);
-}
-
-TEST_CASE("list - emptying a list with remove_one resets tail pointer correctly") {
-  slist<int> l;
-
-  l.insert(1);
-
-  bool success = l.remove_one(1);
-
-  CHECK(success == true);
-
-  if (l.tail() == NULL) {
-    CHECK(1 == 1);
-  } else {
-    CHECK(1 == 2);
-  }
-}
-
-TEST_CASE("list - a list can be converted to an array") {
-  slist<int> l;
-  l.insert(0);
-  l.append(1);
   l.append(2);
-  l.append(3);
+  //l.push_front(0);
+  //l.push_back(3);
+  CHECK(l.count() == 2);
 
-  int* arr;
-  int count = l.to_array(arr);
+  int popped;
 
-  CHECK(count == 4);
-  CHECK(arr[0] == 0);
-  CHECK(arr[1] == 1);
-  CHECK(arr[2] == 2);
-  CHECK(arr[3] == 3);
+  bool popped_success = l.pop_front(popped);
+  CHECK(popped_success == true);
+  //CHECK(l.count() == 1);
 
+  // l.pop_back(popped);
+  // CHECK(l.count() == 2);
 }

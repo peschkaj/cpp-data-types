@@ -7,8 +7,8 @@
    - copy constructor
  */
 
-#include <iostream>
 #include <exception>
+#include <iostream>
 
 #ifndef LIST_NODE
 #define LIST_NODE
@@ -16,10 +16,10 @@
 template <typename T>
 class list_node {
  public:
-  list_node<T>();
-  list_node<T>(const list_node& rhs);
-  list_node<T>(const T data);
-  ~list_node<T>();
+  list_node();
+  list_node(const list_node& rhs);
+  list_node(const T data);
+  ~list_node();
 
   list_node* next() const;
   void next(list_node* next_node);
@@ -28,10 +28,11 @@ class list_node {
   void previous(list_node* prev_node);
 
   T data();
-  void data(const T data);
+  void data(T data);
 
-  list_node<T>& operator=(const list_node& rhs);
-  list_node<T>& operator=(const T& rhs);
+  list_node& operator=(const list_node& rhs);
+  list_node& operator=(const T& rhs);
+
  private:
   list_node* next_node;
   list_node* prev_node;
@@ -64,7 +65,7 @@ list_node<T>::list_node(const list_node& rhs) {
 /* Creates a list_node with node_data set to data */
 template <typename T>
 list_node<T>::list_node(const T data) {
-  node_data = data;
+  this->data(data);
   next_node = NULL;
   prev_node = NULL;
 }
@@ -99,7 +100,7 @@ list_node<T>* list_node<T>::next() const {
 
 /* Sets the next node's value */
 template <typename T>
-void list_node<T>::next(list_node<T> *next_node) {
+void list_node<T>::next(list_node<T>* next_node) {
   list_node* temp = this->next_node;
 
   this->next_node = next_node;
@@ -123,15 +124,20 @@ list_node<T>* list_node<T>::previous() const {
 
 /* Sets the previous node */
 template <typename T>
-void list_node<T>::previous(list_node<T> *prev_node) {
+void list_node<T>::previous(list_node<T>* prev_node) {
+  if (prev_node == NULL && this->prev_node == NULL) {
+    return;
+  }
+
   list_node* temp = this->prev_node;
 
   this->prev_node = prev_node;
 
-  if (temp != NULL) {
+  if (temp) {
     temp->next_node = NULL;
     temp->prev_node = NULL;
     delete temp;
+    temp = NULL;
   }
 }
 
@@ -146,8 +152,8 @@ T list_node<T>::data() {
 
 /* Sets the node's data */
 template <typename T>
-void list_node<T>::data(const T data) {
-  T* new_data = new T(node_data);
+void list_node<T>::data(T data) {
+  T* new_data = new T(data);
   this->node_data = new_data;
 }
 
@@ -161,7 +167,7 @@ list_node<T>& list_node<T>::operator=(const list_node& rhs) {
 
   T* temp = node_data;
 
-  node_data = rhs;
+  node_data = new T(rhs.node_data);
 
   if (temp != NULL) {
     delete temp;
@@ -175,7 +181,7 @@ list_node<T>& list_node<T>::operator=(const list_node& rhs) {
 
 template <typename T>
 list_node<T>& list_node<T>::operator=(const T& rhs) {
-  if (this->node_data == rhs) {
+  if (*(this->node_data) == rhs) {
     return *this;
   }
 
