@@ -16,19 +16,13 @@ class list {
   list(const list& rhs);
   ~list();
 
+  bool insert(const T& to_add);
+  bool insert_beginning(const T& to_add);
+  bool insert_before(list_node<T>*& insert_location, const T& to_add);
+
   int remove(const T& to_remove);
-  int remove(const T& to_remove, list_node<T>*& current);
   int remove_first(const T& to_remove);
   bool remove_one(const T& to_remove);
-  void remove_one(const T& to_remove, list_node<T>*& current, bool& removed);
-
-  bool push_front(T to_push);
-  bool pop_front(T& popped);
-  bool insert(T to_add);
-
-  bool push_back(T to_push);
-  bool pop_back(T& popped);
-  bool append(T to_add);
 
   list_node<T>* first() const;
   list_node<T>* head() const;
@@ -42,6 +36,9 @@ class list {
 
   int count() const;
  private:
+  list_node<T>* insert(list_node<T>* current, const T& to_add);
+  int remove(const T& to_remove, list_node<T>* current);
+  void remove_one(const T& to_remove, list_node<T>* current, bool& removed);
   list_node<T>* list_head;
   list_node<T>* list_tail;
   int node_count;
@@ -93,6 +90,64 @@ list<T>::~list() {
 
 
 template <typename T>
+bool list<T>::insert(const T& to_add) {
+  if (list_head == NULL) {
+    return insert_beginning(to_add);
+  }
+
+  list_head = insert(list_head, to_add);
+
+  return false;
+}
+
+
+
+template <typename T>
+list_node<T>* list<T>::insert(list_node<T>* current, const T& to_add) {
+  list_node<T>* new_node;
+
+  if (to_add < current->data()) {
+    current = insert(current->next(), to_add);
+  } else {
+    new_node = new list_node<T>(to_add);
+    new_node->next(current->next());
+
+    new_node->previous(current->previous());
+    current->previous()->next(new_node);
+    current->previous(new_node);
+
+    current = new_node;
+  }
+
+  return current;
+}
+
+
+
+template <typename T>
+bool list<T>::insert_beginning(const T& to_add) {
+  bool success = false;
+  list_node<T>* new_node = new list_node<T>(to_add);
+
+  if (list_head == NULL) {
+    list_head = new_node;
+    list_tail = new_node;
+    success = true;
+  } else if (list_head->data() == to_add) {
+    success = false;
+  } else {
+    list_head->previous(new_node);
+    new_node->next(list_head);
+    list_head = new_node;
+    success = true;
+  }
+
+  return success;
+}
+
+
+
+template <typename T>
 int list<T>::remove(const T& to_remove) {
   if (list_head == NULL) {
     return 0;
@@ -104,7 +159,7 @@ int list<T>::remove(const T& to_remove) {
 
 
 template <typename T>
-int list<T>::remove(const T& to_remove, list_node<T>*& current) {
+int list<T>::remove(const T& to_remove, list_node<T>* current) {
   int deleted = 0;
 
   if (current == NULL) {
@@ -150,7 +205,7 @@ bool list<T>::remove_one(const T& to_remove) {
 
 
 template <typename T>
-void list<T>::remove_one(const T &to_remove, list_node<T>*& current, bool& deleted) {
+void list<T>::remove_one(const T &to_remove, list_node<T>* current, bool& deleted) {
   list_node<T>* temp;
 
   if (current == NULL || deleted == true) {
@@ -179,117 +234,7 @@ void list<T>::remove_one(const T &to_remove, list_node<T>*& current, bool& delet
 
 
 
-template <typename T>
-bool list<T>::push_front(T to_push) {
-  list_node<T>* nn = new list_node<T>(to_push);
-  list_node<T>* temp;
 
-  if (list_head == NULL) {
-    list_head = nn;
-    list_tail = nn;
-    ++node_count;
-
-    return true;
-  }
-
-  temp = list_head;
-
-  nn->next(temp);
-  temp->previous(nn);
-
-  list_head = nn;
-  ++node_count;
-
-  return true;
-}
-
-
-
-template <typename T>
-bool list<T>::pop_front(T& popped) {
-  if (list_head == NULL) {
-    return false;
-  }
-
-  list_node<T>* temp = list_head;
-  list_head = list_head->next();
-
-  popped = temp->data();
-
-  delete temp;
-
-  if (list_head != NULL) {
-    list_head->previous(NULL);
-  }
-  --node_count;
-
-  return true;
-}
-
-
-
-template <typename T>
-bool list<T>::insert(T to_push) {
-  return push_front(to_push);
-}
-
-
-
-template <typename T>
-bool list<T>::push_back(T to_push) {
-  list_node<T>* nn = new list_node<T>(to_push);
-
-  if (list_tail == NULL) {
-    list_tail = nn;
-    list_head = nn;
-    ++node_count;
-
-    return true;
-  }
-
-  nn->previous(list_tail);
-  list_tail->next(nn);
-  list_tail = nn;
-  ++node_count;
-
-  return true;
-}
-
-
-
-template <typename T>
-bool list<T>::pop_back(T& popped) {
-  list_node<T>* temp;
-  if (list_tail == NULL) {
-    return false;
-  }
-
-  popped = list_tail->data();
-  --node_count;
-
-  if (list_tail == list_head) {
-    delete list_tail;
-
-    list_tail = NULL;
-    list_head = NULL;
-  } else {
-    temp = list_tail;
-    list_tail = temp->previous();
-    list_tail->next(NULL);
-    temp->previous(NULL);
-
-    delete temp;
-  }
-
-  return true;
-}
-
-
-
-template <typename T>
-bool list<T>::append(T to_add) {
-  return push_back(to_add);
-}
 
 
 
