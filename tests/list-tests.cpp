@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include "../src/list.h"
+#include "../src/list.hpp"
 #include <iostream>
 
 TEST_CASE("list - Creating a list doesn't explode") {

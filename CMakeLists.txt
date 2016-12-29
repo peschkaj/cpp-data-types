@@ -10,6 +10,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 file(GLOB cpp-data-types_src
   "src/*.h"
   "src/*.cpp"
+  "src/*.hpp"
   )
 file(GLOB cpp-data-types_tests
   "tests/*.h"
@@ -18,10 +19,13 @@ file(GLOB cpp-data-types_tests
 add_library(cpp-data-types ${cpp-data-types_src})
 
 add_custom_target(run
-  COMMAND cpp-data-types
-  DEPENDS cpp-data-types
+  COMMAND tests
+  DEPENDS tests
   WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
   )
 
-add_executable(tests "tests/main.cpp" "tests/stringbuilder-tests.cpp" "tests/list-tests.cpp" "tests/jpstring-tests.cpp" "tests/queue-tests.cpp" "tests/slist-tests.cpp")
+add_executable(tests ${cpp-data-types_tests})
 target_link_libraries(tests cpp-data-types)
+target_compile_options(tests PUBLIC -ansi -g -Wall)
+
+

@@ -3,7 +3,7 @@
    Implements a doubly linked list
  */
 
-#include "list_node.h"
+#include "list_node.hpp"
 #include <exception>
 
 #ifndef LIST
@@ -15,6 +15,12 @@ class list {
   list();
   list(const list& rhs);
   ~list();
+
+  int remove(const T& to_remove);
+  int remove(const T& to_remove, list_node<T>*& current);
+  int remove_first(const T& to_remove);
+  bool remove_one(const T& to_remove);
+  void remove_one(const T& to_remove, list_node<T>*& current, bool& removed);
 
   bool push_front(T to_push);
   bool pop_front(T& popped);
@@ -47,7 +53,8 @@ class list {
 template <typename T>
 list<T>::list() {
   node_count = 0;
-  list_head = list_tail = NULL;
+  list_head = NULL;
+  list_tail = NULL;
 }
 
 
@@ -70,12 +77,104 @@ list<T>::list(const list& rhs) {
 /* Destroys the list and all associated data */
 template <typename T>
 list<T>::~list() {
-  if (list_head != NULL) {
-    delete list_head;
+  list_node<T>* current;
+
+  while (list_head) {
+    current = list_head;
+    list_head = list_head->next();
+    delete current;
   }
 
   list_head = NULL;
   list_tail = NULL;
+  node_count = 0;
+}
+
+
+
+template <typename T>
+int list<T>::remove(const T& to_remove) {
+  if (list_head == NULL) {
+    return 0;
+  }
+
+  return remove(to_remove, list_head);
+}
+
+
+
+template <typename T>
+int list<T>::remove(const T& to_remove, list_node<T>*& current) {
+  int deleted = 0;
+
+  if (current == NULL) {
+    return deleted;
+  }
+
+  deleted += remove(to_remove, current->next());
+
+  if (current->data() == current) {
+    current->next(current->previous()->next());
+    current->next->previous(current->previous());
+
+    delete current;
+
+    ++deleted;
+    --node_count;
+  }
+
+  return deleted;
+}
+
+
+
+template <typename T>
+int list<T>::remove_first(const T& to_remove) {
+  return 0;
+}
+
+
+
+template <typename T>
+bool list<T>::remove_one(const T& to_remove) {
+  bool deleted = false;
+  if (list_head == NULL) {
+    return deleted;
+  }
+
+  remove_one(to_remove, list_head, deleted);
+
+  return deleted;
+}
+
+
+
+template <typename T>
+void list<T>::remove_one(const T &to_remove, list_node<T>*& current, bool& deleted) {
+  list_node<T>* temp;
+
+  if (current == NULL || deleted == true) {
+    return;
+  }
+
+  if (current->data() == to_remove) {
+    temp = current;
+
+    if (current == list_head) {
+      list_head = current->next();
+    }
+
+    if (current == list_tail) {
+      list_tail = current->previous();
+    }
+
+
+
+
+
+    deleted = true;
+    --node_count;
+  }
 }
 
 
@@ -113,17 +212,15 @@ bool list<T>::pop_front(T& popped) {
   }
 
   list_node<T>* temp = list_head;
-  popped = temp->data();
-
   list_head = list_head->next();
 
-  // if (list_head != NULL) {
-  //   list_head->previous(NULL);
-  // }
-
-  // temp->next(NULL);
+  popped = temp->data();
 
   delete temp;
+
+  if (list_head != NULL) {
+    list_head->previous(NULL);
+  }
   --node_count;
 
   return true;
