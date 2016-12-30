@@ -87,10 +87,10 @@ bool queue<T>::dequeue(T& item) {
     slist_node<T>* next = qptr->next();
     slist_node<T>* temp = next->next();
 
-    qptr->next(next);
+    qptr->next(temp);
 
-    temp->next(NULL);
-    delete temp;
+    next->next(NULL);
+    delete next;
   }
 
   return true;
