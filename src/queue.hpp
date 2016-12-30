@@ -107,4 +107,11 @@ bool queue<T>::peek(T& item) {
   return true;
 }
 
+
+
+template <typename T>
+bool queue<T>::is_empty() {
+  return (qptr == NULL);
+}
+
 #endif

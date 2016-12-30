@@ -53,3 +53,22 @@ TEST_CASE("queue - dequeue on a populated queue dequeues the first item") {
   CHECK(success == true);
   CHECK(removed == 3);
 }
+
+TEST_CASE("queue - is_empty() returns true on an empty list") {
+  queue<int> q;
+
+  bool empty = q.is_empty();
+
+  CHECK(empty == true);
+}
+
+TEST_CASE("queue - is_empty() returns false on a populated list") {
+  queue<int> q;
+  int one = 1;
+
+  q.enqueue(one);
+
+  bool empty = q.is_empty();
+
+  CHECK(empty == false);
+}
