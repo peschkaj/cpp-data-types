@@ -32,6 +32,11 @@ class slist {
 
 
 
+  /* Copy constructor */
+  slist(const slist& rhs);
+
+
+
   /* Destroys this list
 
      Resources stored in each list node are also destroyed.
@@ -103,6 +108,11 @@ class slist {
      Returns the number of elements in the array.
    */
   int to_array(T*& arr) const;
+
+
+
+  /* Overloads the assignment operator */
+  slist<T>& operator=(const slist<T>& rhs);
  private:
   /* A pointer to the head of the list */
   slist_node<T>* list_head;
@@ -153,6 +163,19 @@ slist<T>::slist() {
   list_head = NULL;
   list_tail = NULL;
   node_count = 0;
+}
+
+
+
+template <typename T>
+slist<T>::slist(const slist& rhs) {
+  slist_node<T>* current = rhs->head();
+
+  while (current) {
+    append(current->data());
+
+    current = current->next();
+  }
 }
 
 
