@@ -23,10 +23,9 @@
    `initial_size` sets the value of `capacity`.
    `chars` is initialized with a size of `capacity`
  */
-jpstring::jpstring(int initial_size)
-    : capacity(initial_size) {
+jpstring::jpstring(int initial_size) : capacity(initial_size) {
   char_length = 0;
-  chars = new char[capacity];
+  chars = new char[capacity]();
 }
 
 
@@ -38,10 +37,11 @@ jpstring::jpstring(int initial_size)
    are copied into this string using `strncpy` to perform a secure,
    length-bounded copy that zeroes out trailing bytes in `chars.`
  */
-jpstring::jpstring(const jpstring& rhs) {
+jpstring::jpstring(const jpstring& rhs, int initial_size)
+    : capacity(initial_size) {
   char_length = rhs.char_length;
   capacity = rhs.capacity;
-  chars = new char[capacity];
+  chars = new char[capacity]();
   strncpy(chars, rhs.chars, capacity);
 }
 
@@ -53,8 +53,7 @@ jpstring::jpstring(const jpstring& rhs) {
 
    The new characters are added to this string using the `append` method.
  */
-jpstring::jpstring(const char* rhs, int initial_size)
-    : capacity(initial_size) {
+jpstring::jpstring(const char* rhs, int initial_size) : capacity(initial_size) {
   char_length = 0;
   this->chars = NULL;
 
@@ -75,12 +74,12 @@ jpstring::~jpstring() {
 
 
 /* Converts this string to a `char*` */
-jpstring::operator char* () {
+jpstring::operator char*() {
   return to_cstring();
 }
 
 /* Converts this string to a `const char*` */
-jpstring::operator const char* () {
+jpstring::operator const char*() {
   return to_cstring();
 }
 
