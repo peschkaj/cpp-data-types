@@ -16,7 +16,7 @@
             2) it doesn't upset the spellchecker in emacs
  */
 
-#include "list.h"
+#include "slist.h"
 #include <iostream>
 #include <cstring>
 #include <sstream>

@@ -448,11 +448,11 @@ std::istream& operator>>(std::istream& in, jpstring& rhs) {
       rhs += buffer;
       buffer = new char[jpstring::BUFFER_SIZE]();
     }
-
-    delete[] buffer;
   } else {
     in.setstate(std::ios::failbit);
   }
+
+  delete[] buffer;
 
   return in;
 }
