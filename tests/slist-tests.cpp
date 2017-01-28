@@ -162,14 +162,14 @@ TEST_CASE("slist - a list can be converted to an array") {
 
 TEST_CASE("slist - copy constructor actually copies the list") {
   slist<int> original;
-  slist<int> copy;
+
 
   original.insert(1);
   original.insert(2);
   original.insert(3);
   original.insert(4);
 
-  copy = original;
+  slist<int> copy(original);
 
   CHECK(original.first()->data() == copy.first()->data());
   CHECK(original.last()->data() == copy.last()->data());

@@ -80,12 +80,12 @@ class slist {
 
 
   /* Inserts a new item at the head of the list */
-  bool insert(T to_add);
+  bool insert(T const& to_add);
 
 
 
   /* Inserts a new item at the end of the list */
-  bool append(T to_add);
+  bool append(T const& to_add);
 
 
 
@@ -169,7 +169,7 @@ slist<T>::slist() {
 
 template <typename T>
 slist<T>::slist(const slist& rhs) {
-  slist_node<T>* current = rhs->head();
+  slist_node<T>* current = rhs.list_head;
 
   while (current) {
     append(current->data());
@@ -262,7 +262,7 @@ int slist<T>::count() const {
    the list.
  */
 template <typename T>
-bool slist<T>::insert(T to_add) {
+bool slist<T>::insert(T const& to_add) {
   slist_node<T>* new_node = new slist_node<T>(to_add);
 
   if (list_head == NULL) {
@@ -280,7 +280,7 @@ bool slist<T>::insert(T to_add) {
 
 /* Adds a new node at the end of the list. */
 template <typename T>
-bool slist<T>::append(T to_add) {
+bool slist<T>::append(T const& to_add) {
   bool success = false;
 
   try {

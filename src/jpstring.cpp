@@ -75,12 +75,12 @@ jpstring::~jpstring() {
 
 /* Converts this string to a `char*` */
 jpstring::operator char*() {
-  return to_cstring();
+  return chars;
 }
 
 /* Converts this string to a `const char*` */
 jpstring::operator const char*() {
-  return to_cstring();
+  return chars;
 }
 
 
