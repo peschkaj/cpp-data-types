@@ -16,8 +16,8 @@
             2) it doesn't upset the spellchecker in emacs
  */
 
-#include <iostream>
 #include <cstring>
+#include <iostream>
 #include <sstream>
 #include "slist.h"
 
@@ -32,7 +32,7 @@ class jpstring {
 
 
   /* Copy constructor */
-  jpstring(const jpstring& rhs);
+  jpstring(const jpstring& rhs, int initial_size = DEFAULT_CAPACITY);
 
 
 
@@ -51,8 +51,8 @@ class jpstring {
 
 
   /* Converts this string to a char* */
-  operator char* ();
-  operator const char* ();
+  operator char*();
+  operator const char*();
 
 
 
@@ -136,6 +136,7 @@ class jpstring {
    */
   jpstring& operator+=(const jpstring& rhs);
   jpstring& operator+=(const char* rhs);
+  jpstring& operator+=(const jpstring* rhs);
 
 
 
@@ -159,13 +160,13 @@ class jpstring {
      The `eol` parameter is necessary because this string uses a
      c-string as the representation of the string.
    */
-  slist<jpstring>* split(char delimiter= ' ', char eol = '\0');
+  slist<jpstring>* split(char delimiter = ' ', char eol = '\0');
 
 
 
   /* Overloads allowing the stream operator to be used with a string */
   friend std::ostream& operator<<(std::ostream& out, const jpstring& rhs);
-  friend std::istream& operator>>(std::istream& in,  jpstring& rhs);
+  friend std::istream& operator>>(std::istream& in, jpstring& rhs);
 
   /* Returns the current length of the string. */
   int length() const;
@@ -174,6 +175,7 @@ class jpstring {
 
   /* Returns the capacity of this string. */
   int size() const;
+
  private:
   /* A convenience method provided for comparison operations. */
   bool equals(const char* rhs) const;

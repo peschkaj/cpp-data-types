@@ -6,24 +6,32 @@
 template <typename T>
 class slist_node {
  public:
+  slist_node();
   slist_node(T data);
   slist_node(const slist_node& rhs);
   ~slist_node();
 
-  slist_node* next();
+  slist_node*& next();
   void next(slist_node* next_node);
 
-  T data();
+  T data() const;
   void data(T data);
 
   void display() const;
 
   slist_node& operator=(const slist_node& rhs);
   slist_node& operator=(const T& rhs);
+
  private:
   slist_node* next_node;
   T* node_data;
 };
+
+
+
+template <typename T>
+slist_node<T>::slist_node() : next_node(NULL) {
+}
 
 
 
@@ -45,11 +53,11 @@ slist_node<T>::slist_node(const slist_node& rhs) {
 
 template <typename T>
 slist_node<T>::~slist_node() {
-  if (node_data) {
+  if (node_data != NULL) {
     delete node_data;
   }
 
-  if (next_node) {
+  if (next_node != NULL) {
     delete next_node;
   }
 
@@ -60,7 +68,7 @@ slist_node<T>::~slist_node() {
 
 
 template <typename T>
-slist_node<T>* slist_node<T>::next() {
+slist_node<T>*& slist_node<T>::next() {
   return next_node;
 }
 
@@ -74,7 +82,7 @@ void slist_node<T>::next(slist_node<T>* next_node) {
 
 
 template <typename T>
-T slist_node<T>::data() {
+T slist_node<T>::data() const {
   return *(node_data);
 }
 
@@ -120,4 +128,5 @@ slist_node<T>& slist_node<T>::operator=(const T& rhs) {
 
   return *this;
 }
+
 #endif

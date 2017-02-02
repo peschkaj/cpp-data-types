@@ -19,44 +19,38 @@
 #include "jpstring.h"
 
 /* Creates a jpstring using.
-
    `initial_size` sets the value of `capacity`.
    `chars` is initialized with a size of `capacity`
  */
-jpstring::jpstring(int initial_size)
-    : capacity(initial_size) {
+jpstring::jpstring(int initial_size) : capacity(initial_size), chars(NULL) {
   char_length = 0;
-  chars = new char[capacity];
 }
 
 
 
 /* Copies another jpstring into this one.
-
    This string's `char_length` and `capacity` are set with values from rhs.
    `chars` is initialized using `capacity` and then the contents of rhs
    are copied into this string using `strncpy` to perform a secure,
    length-bounded copy that zeroes out trailing bytes in `chars.`
  */
-jpstring::jpstring(const jpstring& rhs) {
+jpstring::jpstring(const jpstring& rhs, int initial_size)
+    : capacity(initial_size), chars(NULL) {
   char_length = rhs.char_length;
   capacity = rhs.capacity;
-  chars = new char[capacity];
+  chars = new char[capacity]();
   strncpy(chars, rhs.chars, capacity);
 }
 
 
 
 /* Creates an initialized string from the contents of rhs.
-
    This string's capacity is set to `initial_size`.
-
    The new characters are added to this string using the `append` method.
  */
 jpstring::jpstring(const char* rhs, int initial_size)
-    : capacity(initial_size) {
+    : capacity(initial_size), chars(NULL) {
   char_length = 0;
-  this->chars = NULL;
 
   append(rhs);
 }
@@ -75,12 +69,12 @@ jpstring::~jpstring() {
 
 
 /* Converts this string to a `char*` */
-jpstring::operator char* () {
+jpstring::operator char*() {
   return to_cstring();
 }
 
 /* Converts this string to a `const char*` */
-jpstring::operator const char* () {
+jpstring::operator const char*() {
   return to_cstring();
 }
 
@@ -114,7 +108,6 @@ bool jpstring::operator==(const char* rhs) const {
 
 
 /* Compares this string to rhs.
-
    Returns true if they are not equal, false otherwise.
 */
 bool jpstring::operator!=(const jpstring& rhs) const {
@@ -124,7 +117,6 @@ bool jpstring::operator!=(const jpstring& rhs) const {
 
 
 /* Compares this string to rhs.
-
    Returns true if they are not equal, false otherwise.
 */
 bool jpstring::operator!=(const char* rhs) const {
@@ -134,9 +126,7 @@ bool jpstring::operator!=(const char* rhs) const {
 
 
 /* Less than operator overload.
-
    Returns true if this string is less than rhs, false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is less
    than rhs.
  */
@@ -147,9 +137,7 @@ bool jpstring::operator<(const jpstring& rhs) const {
 
 
 /* Less than operator overload.
-
    Returns true if this string is less than rhs, false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is less
    than rhs.
  */
@@ -160,10 +148,8 @@ bool jpstring::operator<(const char* rhs) const {
 
 
 /* Less than or equal operator overload.
-
    Returns true if this string is less than or equal to rhs.
    Returns false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is less
    than rhs.
  */
@@ -174,10 +160,8 @@ bool jpstring::operator<=(const jpstring& rhs) const {
 
 
 /* Less than or equal operator overload.
-
    Returns true if this string is less than or equal to rhs.
    Returns false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is less
    than rhs.
 */
@@ -188,10 +172,8 @@ bool jpstring::operator<=(const char* rhs) const {
 
 
 /* Greater than operator overload.
-
    Returns true if this string is greater than rhs.
    Returns false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is greater
    than rhs.
 */
@@ -202,10 +184,8 @@ bool jpstring::operator>(const jpstring& rhs) const {
 
 
 /* Greater than operator overload.
-
    Returns true if this string is greater than rhs.
    Returns false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is greater
    than rhs.
 */
@@ -216,10 +196,8 @@ bool jpstring::operator>(const char* rhs) const {
 
 
 /* Greater than or equal to operator overload.
-
    Returns true if this string is greater than or equal to rhs.
    Returns false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is greater
    than or equal to rhs.
 */
@@ -230,10 +208,8 @@ bool jpstring::operator>=(const jpstring& rhs) const {
 
 
 /* Greater than or equal to operator overload.
-
    Returns true if this string is greater than or equal to rhs.
    Returns false otherwise.
-
    Internally, this uses `strcmp` to determine if this string is greater
    than or equal to rhs.
 */
@@ -244,9 +220,7 @@ bool jpstring::operator>=(const char* rhs) const {
 
 
 /* Overloading the assignment operator
-
    The initial check ensures we're not assigning to our self.
-
    Once we know we're not assigning to our self, operator=(const char*)
    is for assignment.
  */
@@ -263,7 +237,6 @@ jpstring& jpstring::operator=(const jpstring& rhs) {
 
 
 /* Assignment operator overload for const char*
-
    Creates a temporary pointer to hold `chars`. If the memory allocation
    for the new `chars` fails, we still have the original characters in the
    string.
@@ -286,9 +259,7 @@ jpstring& jpstring::operator=(const char* rhs) {
 
 
 /* Overloads the += operator.
-
    Appends `rhs` to this string.
-
    If this string is too short, the capacity is expanded by doubling it
    until it's large enough to accommodate both this string and rhs.
  */
@@ -299,9 +270,7 @@ jpstring& jpstring::operator+=(const jpstring& rhs) {
 
 
 /* Overloads the += operator.
-
    Appends `rhs` to this string.
-
    If this string is too short, the capacity is expanded by doubling it
    until it's large enough to accommodate both this string and rhs.
 */
@@ -309,6 +278,17 @@ jpstring& jpstring::operator+=(const char* rhs) {
   append(rhs);
 
   return *this;
+}
+
+
+
+/* Overloads the += operator.
+   Appends `rhs` to this string.
+   If this string is too short, the capacity is expanded by doubling it
+   until it's large enough to accommodate both this string and rhs.
+*/
+jpstring& jpstring::operator+=(const jpstring* rhs) {
+  return (*(this) += rhs->chars);
 }
 
 
@@ -332,11 +312,9 @@ jpstring jpstring::operator+(const char* rhs) {
 
 
 /* Appends rhs to this string.
-
    If this string's capacity is too small to contain the new string,
    the capacity is repeatedly doubled until it is large enough to hold
    both this string and rhs.
-
    Once the capacity is large enough, `strncat` is used to concatenate
    rhs and this string. `strncat` is used to prevent buffer overruns
    and to ensure that the resulting new string is always null terminated.
@@ -362,24 +340,18 @@ void jpstring::append(const char* rhs) {
 
 
 /* Creates a C style string (char array) from this string.
-
    `chars` is copied into a new buffer and a pointer to the buffer is
    returned to the caller.
-
    The returned string will be sized to char_length + 1 and `strncpy`
    will ensure that the buffer is null terminated.
  */
 char* jpstring::to_cstring() const {
-  char* buffer = new char[char_length + 1]();
-  strncpy(buffer, chars, char_length + 1);
-
-  return buffer;
+  return chars;
 }
 
 
 
 /* Grows the internal character array.
-
    The capacity will be doubled until it is larger than the desired
    string. Once the capacity is at the right size, a temporary pointer
    to `chars` is created. `chars` is initialized to the new size
@@ -407,7 +379,6 @@ void jpstring::grow_chars(int minimum_length) {
 
 
 /* Returns the length of this string.
-
    This is tracked through all assignment operations.
  */
 int jpstring::length() const {
@@ -417,7 +388,6 @@ int jpstring::length() const {
 
 
 /* Returns this string's capacity.
-
    Capacity only changes when an operation would grow this string to be
    larger than the current capacity. This value can only be set during
    initialization and inside `grow_chars`.
@@ -437,7 +407,6 @@ std::ostream& operator<<(std::ostream& out, const jpstring& rhs) {
 
 
 /* Provides an overload for the istream operator >>
-
    This uses the += operator overload internally, and only data types
    supported by += can be streamed into this string.
  */
@@ -449,11 +418,11 @@ std::istream& operator>>(std::istream& in, jpstring& rhs) {
       rhs += buffer;
       buffer = new char[jpstring::BUFFER_SIZE]();
     }
-
-    delete[] buffer;
   } else {
     in.setstate(std::ios::failbit);
   }
+
+  delete[] buffer;
 
   return in;
 }
@@ -462,11 +431,9 @@ std::istream& operator>>(std::istream& in, jpstring& rhs) {
 
 /* Splits this string on the delimiter (space by default) until the end
    of line character (`eol` defaults to '\0') is reached.
-
    Characters are read in using using a buffer that is `BUFFER_SIZE`
    characters long. `BUFFER_SIZE` is set to 140 characters at compile
    time. This should be sufficient for the vast majority of use cases.
-
    A stringstream is used to stream characters out of `chars` and into
    the buffer.
  */
