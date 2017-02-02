@@ -5,8 +5,8 @@
    - copy constructor
 
    A templatized stack. Provides the following operations:
-    - enstack(T item) - adds item at the beginning of the list
-    - destack(T item) - removes the first item from the list
+    - push(T item) - adds item at the beginning of the list
+    - pop(T item) - removes the first item from the list
     - peek(T item)    - returns a copy of the first item in the list
     - is_empty()      - checks if the list is empty
  */

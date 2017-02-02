@@ -34,10 +34,8 @@ jpstring::jpstring(int initial_size) : capacity(initial_size), chars(NULL) {
    are copied into this string using `strncpy` to perform a secure,
    length-bounded copy that zeroes out trailing bytes in `chars.`
  */
-jpstring::jpstring(const jpstring& rhs, int initial_size)
-    : capacity(initial_size), chars(NULL) {
-  char_length = rhs.char_length;
-  capacity = rhs.capacity;
+jpstring::jpstring(const jpstring& rhs)
+    : capacity(rhs.capacity), char_length(rhs.char_length), chars(NULL) {
   chars = new char[capacity]();
   strncpy(chars, rhs.chars, capacity);
 }
@@ -70,12 +68,12 @@ jpstring::~jpstring() {
 
 /* Converts this string to a `char*` */
 jpstring::operator char*() {
-  return to_cstring();
+  return chars;
 }
 
 /* Converts this string to a `const char*` */
 jpstring::operator const char*() {
-  return to_cstring();
+  return chars;
 }
 
 

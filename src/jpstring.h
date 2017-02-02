@@ -32,7 +32,7 @@ class jpstring {
 
 
   /* Copy constructor */
-  jpstring(const jpstring& rhs, int initial_size = DEFAULT_CAPACITY);
+  jpstring(const jpstring& rhs);
 
 
 

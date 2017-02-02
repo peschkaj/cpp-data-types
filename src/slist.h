@@ -33,30 +33,19 @@ class slist {
  public:
   /* Create a new list */
   slist();
-
-
-
-  /* copy constructor */
+  /* Copy constructor */
   slist(const slist& rhs);
-
-
 
   /* Destroys this list
      Resources stored in each list node are also destroyed.
    */
   ~slist();
 
-
-
   /* Returns the first node of the list */
   slist_node<T>* first() const;
 
-
-
   /* Returns the first node of the list */
   slist_node<T>* head() const;
-
-
 
   /* Sets the head of the list to the new node
      This _replaces_ the existing head of the list, unlinks the old
@@ -64,44 +53,28 @@ class slist {
    */
   void head(slist_node<T>* new_head);
 
-
-
   /* Returns the last node of the list */
   slist_node<T>* last();
-
-
 
   /* Returns the last node of the list */
   slist_node<T>* tail();
 
-
-
   /* Returns the count of items in the list */
   int count() const;
-
-
 
   /* Inserts a new item at the head of the list */
   bool insert(T const& to_add);
 
-
-
   /* Inserts a new item at the end of the list */
   bool append(T const& to_add);
-
-
 
   /* Deletes all occurrences of to_remove from the list.
      The number of nodes deleted is returned from the method.
    */
   int remove(const T& to_remove);
 
-
-
   /* Only removes the first occurrence of to_remove */
   bool remove_one(const T& to_remove);
-
-
 
   /* Converts this list into an array of T
      The array is returned via the `arr` parameter.
@@ -109,26 +82,17 @@ class slist {
    */
   int to_array(T*& arr) const;
 
-
-
-  /* Overloads operator= for an slist */
-  slist operator=(const slist& rhs);
-
+  /* Overloads the assignment operator */
+  slist<T>& operator=(const slist<T>& rhs);
  private:
   /* A pointer to the head of the list */
   slist_node<T>* list_head;
 
-
-
   /* A pointer to the tail of the list */
   slist_node<T>* list_tail;
 
-
-
   /* The current node count in the list */
   int node_count;
-
-
 
   /* Removes a node from the list
      Recursively deletes from the list. This requires a full traversal
@@ -145,11 +109,7 @@ class slist {
   slist_node<T>* remove(slist_node<T>* current, const T& to_remove,
                         int& removed);
 
-
-
   void remove_one(slist_node<T>* current, const T& to_remove, bool& removed);
-
-
 
   void copy_list(slist_node<T>* source);
 };
@@ -441,7 +401,7 @@ int slist<T>::to_array(T*& arr) const {
 
 /* Overload for operator= */
 template <typename T>
-slist<T> slist<T>::operator=(const slist<T>& rhs) {
+slist<T>& slist<T>::operator=(const slist<T>& rhs) {
   if (this == &rhs) {
     return *this;
   }
